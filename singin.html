@@ -1,0 +1,2384 @@
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>PRIME</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+/* =========================================================
+   LOGIN - SE MANTIENE EL DISEÑO DE PRIME
+========================================================= */
+
+.login-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.82);
+    z-index:9999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:25px;
+}
+
+.login-overlay.active{
+    display:flex;
+}
+
+.login-box{
+    width:min(1200px,100%);
+    max-height:95vh;
+    overflow:auto;
+    background:#fff;
+    color:#111;
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    padding:0;
+}
+
+.login-left{
+    padding:25px 45px 45px;
+}
+
+.login-brand{
+    height:45px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    color:#ff4b0b;
+    font-family:"Space Mono",monospace;
+    font-size:14px;
+    font-weight:bold;
+    letter-spacing:5px;
+}
+
+.login-brand span{
+    display:block;
+    width:34px;
+    height:3px;
+    background:#ff4b0b;
+}
+
+.login-left h1{
+    margin:20px 0 35px;
+    font-family:Anton,Impact,sans-serif;
+    font-size:58px;
+    line-height:1;
+    text-transform:uppercase;
+    letter-spacing:-1px;
+}
+
+.login-label{
+    display:block;
+    margin:0 0 12px;
+    color:#243f5b;
+    font-family:"Space Mono",monospace;
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:4px;
+}
+
+.login-input{
+    width:100%;
+    height:59px;
+    padding:0 22px;
+    border:1px solid #e5e5e5;
+    border-radius:15px;
+    background:#f1f2f3;
+    color:#222;
+    font-family:Inter,sans-serif;
+    font-size:16px;
+    outline:none;
+    margin-bottom:28px;
+}
+
+.login-input:focus{
+    border-color:#ff5a00;
+    box-shadow:0 0 0 2px rgba(255,90,0,.1);
+}
+
+.login-input::placeholder{
+    color:#698096;
+}
+
+.login-options{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:4px 0 22px;
+    color:#52657a;
+    font-family:Inter,sans-serif;
+    font-size:15px;
+}
+
+.login-remember{
+    display:flex;
+    align-items:center;
+    gap:7px;
+}
+
+.login-remember input{
+    width:18px;
+    height:18px;
+}
+
+.login-options a{
+    color:#ff4b0b;
+    text-decoration:none;
+    cursor:pointer;
+}
+
+.login-button{
+    width:100%;
+    height:68px;
+    border:0;
+    border-radius:40px;
+    background:linear-gradient(90deg,#ff4b0b,#ff8500);
+    color:#fff;
+    font-family:Inter,sans-serif;
+    font-size:20px;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow:0 15px 30px rgba(255,92,0,.25);
+    transition:.2s;
+}
+
+.login-button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 18px 35px rgba(255,92,0,.32);
+}
+
+.login-error{
+    display:none;
+    padding:12px 15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    background:#fff0f0;
+    color:#c62828;
+    font-family:Inter,sans-serif;
+    font-size:14px;
+}
+
+.login-divider{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin:35px 0 24px;
+}
+
+.login-divider span{
+    flex:1;
+    height:1px;
+    background:#ddd;
+}
+
+.login-divider p{
+    margin:0;
+    color:#63778d;
+    font-family:Inter,sans-serif;
+    font-size:14px;
+}
+
+.login-social{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.login-social button{
+    height:58px;
+    border:1px solid #e5e5e5;
+    border-radius:14px;
+    background:#f1f2f3;
+    color:#111;
+    font-family:Inter,sans-serif;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+.login-close{
+    position:absolute;
+    right:22px;
+    top:18px;
+    width:38px;
+    height:38px;
+    border:0;
+    border-radius:50%;
+    background:#f1f1f1;
+    font-size:22px;
+    cursor:pointer;
+    z-index:5;
+}
+
+.login-faq{
+    padding:135px 45px 40px;
+    background:#fff;
+}
+
+.login-faq-item{
+    border-bottom:1px solid #ddd;
+}
+
+.login-faq-question{
+    min-height:78px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    font-family:Inter,sans-serif;
+    font-size:18px;
+}
+
+.login-faq-question span{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.login-faq-answer{
+    display:none;
+    padding:0 20px 28px 0;
+    color:#344c63;
+    font-family:Inter,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+}
+
+.login-faq-item.open .login-faq-answer{
+    display:block;
+}
+
+/* =========================================================
+   USUARIO LOGUEADO EN EL HEADER
+========================================================= */
+
+.user-account{
+    display:none;
+    align-items:center;
+    gap:12px;
+}
+
+.user-email{
+    color:#fff;
+    font-family:Inter,sans-serif;
+    font-size:13px;
+    max-width:180px;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+
+.logout-btn{
+    border:0;
+    border-radius:30px;
+    padding:12px 22px;
+    background:#ff4b0b;
+    color:#fff;
+    font-family:Inter,sans-serif;
+    font-size:14px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =========================================================
+   PROFILE - DATOS DINÁMICOS
+========================================================= */
+
+.profile-email{
+    color:#8ea6c0 !important;
+}
+
+/* =========================================================
+   RESPONSIVE LOGIN
+========================================================= */
+
+@media(max-width:900px){
+
+    .login-box{
+        grid-template-columns:1fr;
+    }
+
+    .login-faq{
+        display:none;
+    }
+
+    .login-left{
+        padding:30px 25px 35px;
+    }
+
+    .login-left h1{
+        font-size:48px;
+    }
+}
+
+@media(max-width:500px){
+
+    .login-social{
+        grid-template-columns:1fr;
+    }
+
+    .login-options{
+        font-size:13px;
+    }
+
+    .user-email{
+        display:none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="hd">
+
+    <a href="#home">
+        <img
+            src="https://static.wixstatic.com/media/3323d5_215bb3c0d0a4429b87c15a1325314844~mv2.png/v1/crop/x_179,y_109,w_293,h_165/fill/w_410,h_231,al_c,lg_1,q_85,enc_avif,quality_auto/Prime-removebg-preview.png"
+            alt="PRIME"
+        >
+    </a>
+
+    <nav class="nav" id="nav">
+
+        <a href="#home">Home</a>
+
+        <a href="#courts">Courts</a>
+
+        <a href="#community">Community</a>
+
+        <a href="#blog">Blog</a>
+
+        <a href="#contact">Contact</a>
+
+    </nav>
+
+    <!-- BOTÓN NORMAL -->
+    <a
+        href="javascript:void(0)"
+        class="si"
+        id="signInButton"
+        onclick="openLogin()"
+    >
+        Sign In
+    </a>
+
+    <!-- USUARIO LOGUEADO -->
+    <div
+        class="user-account"
+        id="userAccount"
+    >
+
+        <span
+            class="user-email"
+            id="headerEmail"
+        ></span>
+
+        <button
+            class="logout-btn"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+    <button
+        class="burger"
+        id="bg"
+        aria-label="Menu"
+    >
+        ☰
+    </button>
+
+</header>
+
+<!-- =========================================================
+     HOME
+========================================================= -->
+
+<section id="home" class="hero">
+
+    <div class="wrap">
+
+        <div>
+
+            <p class="lbl">
+                Sports platform
+            </p>
+
+            <h1>
+                Connect, train<br>
+                and play,<br>
+                with <span>Prime.</span>
+            </h1>
+
+            <p class="d">
+                Find courts, meet certified coaches,
+                and organize matches with a sports
+                community all in one place.
+            </p>
+
+            <div class="stats">
+
+                <div>
+                    <span class="num">
+                        +30
+                    </span>
+
+                    <small>
+                        Courts Available
+                    </small>
+                </div>
+
+                <div>
+                    <span class="num">
+                        +50
+                    </span>
+
+                    <small>
+                        Certified Coaches
+                    </small>
+                </div>
+
+                <div>
+                    <span class="num">
+                        +500
+                    </span>
+
+                    <small>
+                        Active Users
+                    </small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     PROFILE
+========================================================= -->
+
+<section class="prof">
+
+    <div class="wrap">
+
+        <p class="lbl">
+            Your profile
+        </p>
+
+        <h2>
+            Your progress, always in view.
+        </h2>
+
+        <p class="sub">
+            A personal dashboard with your favorite
+            sports, stats, and upcoming matches,
+            ready as soon as you log in.
+        </p>
+
+        <div class="pg">
+
+            <div class="pc">
+
+                <div class="who">
+
+                    <div
+                        class="av"
+                        id="profileAvatar"
+                    >
+                        JR
+                    </div>
+
+                    <div>
+
+                        <b id="profileName">
+                            Julia Reyes
+                        </b>
+
+                        <small
+                            id="profileLocation"
+                        >
+                            Panama City · Intermediate level
+                        </small>
+
+                        <small
+                            class="profile-email"
+                            id="profileEmail"
+                            style="display:none"
+                        ></small>
+
+                    </div>
+
+                </div>
+
+                <div class="tags">
+
+                    <span>
+                        Soccer 5-a-side
+                    </span>
+
+                    <span>
+                        Padel
+                    </span>
+
+                    <span>
+                        Running
+                    </span>
+
+                </div>
+
+                <div class="mini">
+
+                    <div>
+                        <b>42</b>
+                        MATCHES
+                    </div>
+
+                    <div>
+                        <b>19</b>
+                        WORKOUTS
+                    </div>
+
+                    <div>
+                        <b>7</b>
+                        ACHIEVEMENTS
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="pc">
+
+                <p
+                    class="lbl"
+                    style="font-size:9px;margin-bottom:6px"
+                >
+                    Upcoming matches
+                </p>
+
+                <div class="up">
+
+                    <div class="dt">
+                        18
+                        <small>
+                            JUL
+                        </small>
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Soccer 5 — Los Halcones
+                        </b>
+
+                        Estadio Agustín
+                        "Muquita" Sánchez · 7:00 PM
+
+                    </div>
+
+                </div>
+
+                <div class="up">
+
+                    <div class="dt">
+                        21
+                        <small>
+                            JUL
+                        </small>
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Coaching session — Padel
+                        </b>
+
+                        Complejo Deportivo de
+                        La Feria de La Chorrera · 6:30 AM
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     COURTS
+========================================================= -->
+
+<section id="courts" class="courts">
+
+    <div class="wrap">
+
+        <div class="ch">
+
+            <div>
+
+                <p class="lbl">
+                    Sports courts
+                </p>
+
+                <h2>
+                    Book your court in<br>
+                    under a minute.
+                </h2>
+
+            </div>
+
+            <a
+                href="#"
+                class="map"
+            >
+                View Interactive Map
+            </a>
+
+        </div>
+
+        <div
+            class="flt"
+            id="flt"
+        >
+
+            <button
+                class="on2"
+                data-s="all"
+            >
+                All Sports
+            </button>
+
+        </div>
+
+        <div class="g3">
+
+            <article class="cc">
+
+                <div
+                    class="im"
+                    style="background-image:url('pool.jpg')"
+                ></div>
+
+                <div class="in">
+
+                    <h3>
+                        La Chorrera Municipal Pool
+                    </h3>
+
+                    <small>
+                        La Chorrera, Panama West
+                    </small>
+
+                    <div class="bt">
+
+                        <strong>
+                            $25
+                            <small>
+                                / hour
+                            </small>
+                        </strong>
+
+                        <span>
+                            ↗
+                        </span>
+
+                    </div>
+
+                    <button class="btn go">
+                        Book Court
+                    </button>
+
+                </div>
+
+            </article>
+
+            <article class="cc">
+
+                <div
+                    class="im"
+                    style="background-image:url('volley.jpg')"
+                ></div>
+
+                <div class="in">
+
+                    <h3>
+                        La Chorrera Volley Court
+                    </h3>
+
+                    <small>
+                        La Chorrera, Panama West
+                    </small>
+
+                    <div class="bt">
+
+                        <strong>
+                            $40
+                            <small>
+                                / hour
+                            </small>
+                        </strong>
+
+                        <span>
+                            ↗
+                        </span>
+
+                    </div>
+
+                    <button class="btn go">
+                        Book Court
+                    </button>
+
+                </div>
+
+            </article>
+
+            <article class="cc">
+
+                <div
+                    class="im"
+                    style="background-image:url('turf.jpg')"
+                ></div>
+
+                <div class="in">
+
+                    <h3>
+                        La Chorrera Turf Pitch
+                    </h3>
+
+                    <small>
+                        La Chorrera, Panama West
+                    </small>
+
+                    <div class="bt">
+
+                        <strong>
+                            $28
+                            <small>
+                                / hour
+                            </small>
+                        </strong>
+
+                        <span>
+                            ↗
+                        </span>
+
+                    </div>
+
+                    <button class="btn go">
+                        Book Court
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     SIGN IN
+========================================================= -->
+
+<section
+    id="signin"
+    class="sign"
+>
+
+    <div class="wrap">
+
+        <hr>
+
+        <div class="sh">
+
+            <div>
+
+                <p class="lbl">
+                    Account
+                </p>
+
+            </div>
+
+            <a
+                href="#courts"
+                class="back"
+            >
+                ↑ Back to Courts
+            </a>
+
+        </div>
+
+        <h2>
+            Sign in
+        </h2>
+
+        <div class="two">
+
+            <form
+                id="mainLoginForm"
+            >
+
+                <div
+                    id="mainLoginError"
+                    style="
+                    display:none;
+                    padding:12px 15px;
+                    margin-bottom:15px;
+                    border-radius:10px;
+                    background:#fff0f0;
+                    color:#c62828;
+                    "
+                ></div>
+
+                <label class="fl">
+                    EMAIL
+                </label>
+
+                <input
+                    id="mainEmail"
+                    type="email"
+                    placeholder="youremail@example.com"
+                    required
+                >
+
+                <label class="fl">
+                    PASSWORD
+                </label>
+
+                <input
+                    id="mainPassword"
+                    type="password"
+                    placeholder="At least 8 characters"
+                >
+
+                <div class="row">
+
+                    <label>
+
+                        <input
+                            id="mainRemember"
+                            type="checkbox"
+                            style="width:auto;vertical-align:middle"
+                        >
+
+                        Remember me
+
+                    </label>
+
+                    <a
+                        href="javascript:void(0)"
+                        onclick="forgotPassword()"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+                <button
+                    class="btn"
+                    type="submit"
+                >
+                    Sign in
+                </button>
+
+                <div class="or">
+                    or continue with
+                </div>
+
+                <div class="soc">
+
+                    <button
+                        type="button"
+                        onclick="fakeSocial('Google')"
+                    >
+                        Google
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="fakeSocial('Apple')"
+                    >
+                        Apple
+                    </button>
+
+                </div>
+
+                <p class="note">
+
+                    Don't have an account?
+
+                    <a
+                        href="javascript:void(0)"
+                        onclick="openLogin()"
+                    >
+                        Create one
+                    </a>
+
+                </p>
+
+            </form>
+
+            <div class="faq">
+
+                <div class="q open">
+
+                    <button>
+                        How do I create an account?
+                        <b></b>
+                    </button>
+
+                    <p>
+                        Enter any valid email containing
+                        the @ symbol and click Sign in.
+                        No registration is required for
+                        this version of the application.
+                    </p>
+
+                </div>
+
+                <div class="q">
+
+                    <button>
+                        Is my data secure?
+                        <b></b>
+                    </button>
+
+                    <p>
+                        Your login session is stored locally
+                        in your browser.
+                    </p>
+
+                </div>
+
+                <div class="q">
+
+                    <button>
+                        Can I sign in with Google or Apple?
+                        <b></b>
+                    </button>
+
+                    <p>
+                        Google and Apple can be connected
+                        later using OAuth.
+                    </p>
+
+                </div>
+
+                <div class="q">
+
+                    <button>
+                        What if I forget my password?
+                        <b></b>
+                    </button>
+
+                    <p>
+                        No password is required for this
+                        version. Simply enter your email
+                        containing @ and sign in.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="light">
+
+    <div class="wrap">
+
+        <div class="fg">
+
+            <div>
+
+                <div class="lg">
+                    PRIME<i>.</i>
+                </div>
+
+                <p>
+                    Connect, train, and play.
+                    The platform that unites
+                    the sports community.
+                </p>
+
+                <div class="so">
+                    <span>IG</span>
+                    <span>FB</span>
+                    <span>TT</span>
+                </div>
+
+            </div>
+
+            <div>
+
+                <h4>
+                    NAVIGATION
+                </h4>
+
+                <ul>
+                    <li>Home</li>
+                    <li>Courts</li>
+                    <li>Coaches</li>
+                </ul>
+
+            </div>
+
+            <div>
+
+                <h4>
+                    COMMUNITY
+                </h4>
+
+                <ul>
+                    <li>Groups</li>
+                    <li>Blog</li>
+                </ul>
+
+            </div>
+
+            <div>
+
+                <h4>
+                    LEGAL
+                </h4>
+
+                <ul>
+                    <li>
+                        Terms and conditions
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="cp">
+            © 2026 Prime. All rights reserved.
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- =========================================================
+     COMMUNITY
+========================================================= -->
+
+<section
+    id="community"
+    class="cm"
+>
+
+    <div class="wrap">
+
+        <p class="lbl">
+            Community
+        </p>
+
+        <h2>
+            Find your<br>
+            next <span class="on">
+                team.
+            </span>
+        </h2>
+
+        <div
+            class="g3"
+            style="margin-top:34px"
+        >
+
+            <div class="cd">
+
+                <i></i>
+
+                <h3>
+                    Find players
+                </h3>
+
+                <p>
+                    Discover athletes around you.
+                </p>
+
+            </div>
+
+            <div class="cd">
+
+                <i></i>
+
+                <h3>
+                    Join matches
+                </h3>
+
+                <p>
+                    Find games and join the action.
+                </p>
+
+            </div>
+
+            <div class="cd">
+
+                <i></i>
+
+                <h3>
+                    Build your team
+                </h3>
+
+                <p>
+                    Create your own sports community.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     IMPACT
+========================================================= -->
+
+<section class="imp">
+
+    <div class="wrap">
+
+        <p class="lbl">
+            Prime impact
+        </p>
+
+        <h2>
+            The scoreboard<br>
+            speaks for us.
+        </h2>
+
+        <div class="bar">
+
+            <div>
+                <span class="num">
+                    +100
+                </span>
+
+                <small>
+                    MATCHES PER WEEK
+                </small>
+            </div>
+
+            <div>
+                <span class="num">
+                    +500
+                </span>
+
+                <small>
+                    ACTIVE USERS
+                </small>
+            </div>
+
+            <div>
+                <span class="num">
+                    +50
+                </span>
+
+                <small>
+                    COACHES
+                </small>
+            </div>
+
+            <div>
+                <span class="num">
+                    +30
+                </span>
+
+                <small>
+                    COURTS
+                </small>
+            </div>
+
+        </div>
+
+        <div class="g3">
+
+            <div class="tc">
+
+                <p>
+                    "Thanks to Prime I found a team
+                    to play with every week.
+                    It completely changed my routine."
+                </p>
+
+                <div class="who">
+
+                    <div class="av">
+                        MG
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Mariana Gómez
+                        </b>
+
+                        <small>
+                            Soccer 5 player
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tc">
+
+                <p>
+                    "Booking courts now takes less
+                    than a minute. I no longer waste
+                    time calling anyone."
+                </p>
+
+                <div class="who">
+
+                    <div class="av">
+                        LT
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Luis Torres
+                        </b>
+
+                        <small>
+                            Match organizer
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="tc">
+
+                <p>
+                    "I found a certified coach near
+                    my home. My level improved
+                    within weeks."
+                </p>
+
+                <div class="who">
+
+                    <div class="av">
+                        AV
+                    </div>
+
+                    <div>
+
+                        <b>
+                            Andrea Vega
+                        </b>
+
+                        <small>
+                            Padel player
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     BLOG
+========================================================= -->
+
+<section
+    id="blog"
+    class="blog"
+>
+
+    <div class="wrap">
+
+        <p class="lbl c">
+            Blog
+        </p>
+
+        <h2>
+            HEALTH, TRAINING AND COMMUNITY.
+        </h2>
+
+        <article class="bc">
+
+            <div
+                class="im"
+                style="
+                background-image:url('blog.jpg');
+                background-size:cover;
+                background-position:center
+                "
+            ></div>
+
+            <div class="in">
+
+                <span class="k">
+                    TRAINING
+                </span>
+
+                <h3>
+                    4 routines to boost your endurance
+                </h3>
+
+                <small>
+                    Jul 28, 2026 · By Coach Ricardo
+                </small>
+
+                <a href="#">
+                    →
+                </a>
+
+            </div>
+
+        </article>
+
+        <a
+            href="#"
+            class="rm"
+        >
+            Read More
+        </a>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
+
+<section
+    id="contact"
+    class="ct"
+>
+
+    <div class="wrap two">
+
+        <div>
+
+            <p class="lbl">
+                Contact
+            </p>
+
+            <h2>
+                Let's talk?
+            </h2>
+
+            <form onsubmit="return false">
+
+                <label class="fl">
+                    NAME
+                </label>
+
+                <input
+                    placeholder="Your full name"
+                >
+
+                <label class="fl">
+                    EMAIL
+                </label>
+
+                <input
+                    type="email"
+                    placeholder="you@example.com"
+                >
+
+                <label class="fl">
+                    MESSAGE
+                </label>
+
+                <textarea
+                    placeholder="Tell us how we can help"
+                ></textarea>
+
+                <button
+                    class="btn"
+                    style="margin-top:16px"
+                >
+                    Send message
+                </button>
+
+                <div class="chips">
+
+                    <a href="mailto:hello@prime.app">
+                        ✉ hello@prime.app
+                    </a>
+
+                    <a href="tel:+50760000000">
+                        ☎ +507 6000-0000
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div
+            class="faq"
+            style="padding-top:70px"
+        >
+
+            <div class="q open">
+
+                <button>
+                    How do I book a court?
+                    <b></b>
+                </button>
+
+                <p>
+                    Explore the court map,
+                    filter by sport and schedule,
+                    and confirm your booking
+                    in seconds.
+                </p>
+
+            </div>
+
+            <div class="q">
+
+                <button>
+                    Can I cancel a booking?
+                    <b></b>
+                </button>
+
+                <p>
+                    Yes, you can cancel from
+                    your profile before the
+                    match starts.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="wrap">
+
+        <div class="fg">
+
+            <div>
+
+                <div class="lg">
+                    PRIME<i>.</i>
+                </div>
+
+                <p>
+                    Connect, train, and play.
+                    The platform that unites
+                    the sports community.
+                </p>
+
+                <div class="so">
+                    <span>IG</span>
+                    <span>FB</span>
+                    <span>TT</span>
+                </div>
+
+            </div>
+
+            <div>
+
+                <h4>
+                    NAVIGATION
+                </h4>
+
+                <ul>
+                    <li>Home</li>
+                    <li>Courts</li>
+                    <li>Coaches</li>
+                </ul>
+
+            </div>
+
+            <div>
+
+                <h4>
+                    COMMUNITY
+                </h4>
+
+                <ul>
+                    <li>Groups</li>
+                    <li>Blog</li>
+                </ul>
+
+            </div>
+
+            <div>
+
+                <h4>
+                    LEGAL
+                </h4>
+
+                <ul>
+                    <li>
+                        Terms and conditions
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="cp">
+            © 2026 Prime. All rights reserved.
+        </div>
+
+    </div>
+
+</footer>
+
+<!-- =========================================================
+     VENTANA DE LOGIN
+========================================================= -->
+
+<div
+    class="login-overlay"
+    id="loginOverlay"
+>
+
+    <div class="login-box">
+
+        <button
+            class="login-close"
+            onclick="closeLogin()"
+        >
+            ×
+        </button>
+
+        <!-- IZQUIERDA -->
+
+        <div class="login-left">
+
+            <div class="login-brand">
+
+                <span></span>
+
+                ACCOUNT
+
+            </div>
+
+            <h1>
+                SIGN IN
+            </h1>
+
+            <div
+                class="login-error"
+                id="loginError"
+            ></div>
+
+            <form
+                id="loginForm"
+            >
+
+                <label
+                    class="login-label"
+                    for="loginEmail"
+                >
+                    EMAIL
+                </label>
+
+                <input
+                    class="login-input"
+                    id="loginEmail"
+                    type="email"
+                    placeholder="youremail@example.com"
+                    autocomplete="email"
+                    required
+                >
+
+                <label
+                    class="login-label"
+                    for="loginPassword"
+                >
+                    PASSWORD
+                </label>
+
+                <input
+                    class="login-input"
+                    id="loginPassword"
+                    type="password"
+                    placeholder="At least 8 characters"
+                >
+
+                <div class="login-options">
+
+                    <label class="login-remember">
+
+                        <input
+                            id="rememberLogin"
+                            type="checkbox"
+                            checked
+                        >
+
+                        Remember me
+
+                    </label>
+
+                    <a
+                        onclick="forgotPassword()"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    SIGN IN
+                </button>
+
+            </form>
+
+            <div class="login-divider">
+
+                <span></span>
+
+                <p>
+                    or continue with
+                </p>
+
+                <span></span>
+
+            </div>
+
+            <div class="login-social">
+
+                <button
+                    type="button"
+                    onclick="fakeSocial('Google')"
+                >
+                    Google
+                </button>
+
+                <button
+                    type="button"
+                    onclick="fakeSocial('Apple')"
+                >
+                    Apple
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- DERECHA -->
+
+        <div class="login-faq">
+
+            <div
+                class="login-faq-item open"
+            >
+
+                <div
+                    class="login-faq-question"
+                    onclick="toggleLoginFaq(this)"
+                >
+
+                    <strong>
+                        How do I create an account?
+                    </strong>
+
+                    <span>
+                        ×
+                    </span>
+
+                </div>
+
+                <div class="login-faq-answer">
+
+                    Enter your email containing
+                    the @ symbol and press
+                    "Sign in".
+
+                    No password is required for
+                    this version of Prime.
+
+                </div>
+
+            </div>
+
+            <div class="login-faq-item">
+
+                <div
+                    class="login-faq-question"
+                    onclick="toggleLoginFaq(this)"
+                >
+
+                    <strong>
+                        Is my data secure?
+                    </strong>
+
+                    <span>
+                        +
+                    </span>
+
+                </div>
+
+                <div class="login-faq-answer">
+
+                    Your login session is saved
+                    in your browser so the page
+                    remembers you.
+
+                </div>
+
+            </div>
+
+            <div class="login-faq-item">
+
+                <div
+                    class="login-faq-question"
+                    onclick="toggleLoginFaq(this)"
+                >
+
+                    <strong>
+                        Can I sign in with Google or Apple?
+                    </strong>
+
+                    <span>
+                        +
+                    </span>
+
+                </div>
+
+                <div class="login-faq-answer">
+
+                    Google and Apple can be
+                    connected later with OAuth.
+
+                </div>
+
+            </div>
+
+            <div class="login-faq-item">
+
+                <div
+                    class="login-faq-question"
+                    onclick="toggleLoginFaq(this)"
+                >
+
+                    <strong>
+                        What if I forget my password?
+                    </strong>
+
+                    <span>
+                        +
+                    </span>
+
+                </div>
+
+                <div class="login-faq-answer">
+
+                    You don't need a password in
+                    this version. Just enter any
+                    valid email containing @.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   MENU
+========================================================= */
+
+document.getElementById("bg").onclick = function(){
+
+    document
+        .getElementById("nav")
+        .classList
+        .toggle("show");
+
+};
+
+document
+    .querySelectorAll("#nav a")
+    .forEach(function(a){
+
+        a.onclick = function(){
+
+            document
+                .getElementById("nav")
+                .classList
+                .remove("show");
+
+        };
+
+    });
+
+/* =========================================================
+   FAQ NORMAL
+========================================================= */
+
+document
+    .querySelectorAll(".q button")
+    .forEach(function(button){
+
+        button.onclick = function(){
+
+            this
+                .parentElement
+                .classList
+                .toggle("open");
+
+        };
+
+    });
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+document
+    .querySelectorAll("#flt button")
+    .forEach(function(button){
+
+        button.onclick = function(){
+
+            document
+                .querySelectorAll("#flt button")
+                .forEach(function(x){
+
+                    x.classList.remove("on2");
+
+                });
+
+            button.classList.add("on2");
+
+            document
+                .querySelectorAll(".cc")
+                .forEach(function(card){
+
+                    if(
+                        button.dataset.s === "all" ||
+                        card.dataset.s === button.dataset.s
+                    ){
+
+                        card.style.display = "";
+
+                    }else{
+
+                        card.style.display = "none";
+
+                    }
+
+                });
+
+        };
+
+    });
+
+/* =========================================================
+   ABRIR LOGIN
+========================================================= */
+
+function openLogin(){
+
+    document
+        .getElementById("loginOverlay")
+        .classList
+        .add("active");
+
+    document
+        .getElementById("loginEmail")
+        .focus();
+
+}
+
+/* =========================================================
+   CERRAR LOGIN
+========================================================= */
+
+function closeLogin(){
+
+    document
+        .getElementById("loginOverlay")
+        .classList
+        .remove("active");
+
+}
+
+/* =========================================================
+   CERRAR AL HACER CLICK AFUERA
+========================================================= */
+
+document
+    .getElementById("loginOverlay")
+    .addEventListener(
+        "click",
+        function(event){
+
+            if(event.target === this){
+
+                closeLogin();
+
+            }
+
+        }
+    );
+
+/* =========================================================
+   LOGIN
+   CUALQUIER EMAIL CON @ PUEDE ENTRAR
+========================================================= */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        function(event){
+
+            event.preventDefault();
+
+            const email =
+                document
+                .getElementById("loginEmail")
+                .value
+                .trim()
+                .toLowerCase();
+
+            const password =
+                document
+                .getElementById("loginPassword")
+                .value;
+
+            const error =
+                document
+                .getElementById("loginError");
+
+            error.style.display = "none";
+
+            /*
+             * SOLO SE COMPRUEBA QUE EL EMAIL
+             * TENGA EL CARÁCTER @
+             */
+
+            if(
+                !email ||
+                !email.includes("@")
+            ){
+
+                error.innerText =
+                    "Introduce un correo válido que contenga @.";
+
+                error.style.display = "block";
+
+                return;
+
+            }
+
+            /*
+             * NO SE COMPRUEBA LA CONTRASEÑA.
+             * CUALQUIER CONTRASEÑA FUNCIONA.
+             */
+
+            let remember =
+                document
+                .getElementById("rememberLogin")
+                .checked;
+
+            if(remember){
+
+                localStorage.setItem(
+                    "primeUser",
+                    email
+                );
+
+            }else{
+
+                sessionStorage.setItem(
+                    "primeUser",
+                    email
+                );
+
+            }
+
+            /*
+             * ACTUALIZAR TODO EL SITIO
+             */
+
+            setLoggedUser(email);
+
+            closeLogin();
+
+            /*
+             * LLEVAR AL PERFIL
+             */
+
+            setTimeout(function(){
+
+                document
+                    .getElementById("profileName")
+                    .scrollIntoView({
+                        behavior:"smooth",
+                        block:"center"
+                    });
+
+            },150);
+
+        }
+    );
+
+/* =========================================================
+   ACTIVAR USUARIO
+========================================================= */
+
+function setLoggedUser(email){
+
+    /*
+     * HEADER
+     */
+
+    document
+        .getElementById("signInButton")
+        .style
+        .display = "none";
+
+    document
+        .getElementById("userAccount")
+        .style
+        .display = "flex";
+
+    document
+        .getElementById("headerEmail")
+        .innerText = email;
+
+    /*
+     * PERFIL
+     */
+
+    document
+        .getElementById("profileName")
+        .innerText = email.split("@")[0];
+
+    document
+        .getElementById("profileEmail")
+        .innerText = email;
+
+    document
+        .getElementById("profileEmail")
+        .style
+        .display = "block";
+
+    /*
+     * AVATAR
+     */
+
+    let username =
+        email.split("@")[0];
+
+    let letters =
+        username
+        .replace(/[^a-zA-Z]/g,"")
+        .substring(0,2)
+        .toUpperCase();
+
+    if(letters.length < 2){
+
+        letters = "PR";
+
+    }
+
+    document
+        .getElementById("profileAvatar")
+        .innerText = letters;
+
+    /*
+     * GUARDAR ESTADO VISUAL
+     */
+
+    document
+        .body
+        .classList
+        .add("logged-in");
+
+}
+
+/* =========================================================
+   COMPROBAR SI YA ESTABA LOGUEADO
+========================================================= */
+
+function checkLogin(){
+
+    const localUser =
+        localStorage.getItem("primeUser");
+
+    const sessionUser =
+        sessionStorage.getItem("primeUser");
+
+    const email =
+        localUser || sessionUser;
+
+    if(email){
+
+        setLoggedUser(email);
+
+    }
+
+}
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+function logout(){
+
+    localStorage.removeItem(
+        "primeUser"
+    );
+
+    sessionStorage.removeItem(
+        "primeUser"
+    );
+
+    document
+        .getElementById("signInButton")
+        .style
+        .display = "";
+
+    document
+        .getElementById("userAccount")
+        .style
+        .display = "none";
+
+    document
+        .getElementById("headerEmail")
+        .innerText = "";
+
+    document
+        .getElementById("profileEmail")
+        .innerText = "";
+
+    document
+        .getElementById("profileEmail")
+        .style
+        .display = "none";
+
+    document
+        .getElementById("profileName")
+        .innerText = "Julia Reyes";
+
+    document
+        .getElementById("profileAvatar")
+        .innerText = "JR";
+
+    alert(
+        "Has cerrado sesión correctamente."
+    );
+
+}
+
+/* =========================================================
+   FAQ DEL LOGIN
+========================================================= */
+
+function toggleLoginFaq(element){
+
+    const item =
+        element.parentElement;
+
+    const isOpen =
+        item.classList.contains("open");
+
+    document
+        .querySelectorAll(".login-faq-item")
+        .forEach(function(x){
+
+            x.classList.remove("open");
+
+            const icon =
+                x.querySelector(
+                    ".login-faq-question span"
+                );
+
+            if(icon){
+
+                icon.innerText = "+";
+
+            }
+
+        });
+
+    if(!isOpen){
+
+        item.classList.add("open");
+
+        element
+            .querySelector("span")
+            .innerText = "×";
+
+    }
+
+}
+
+/* =========================================================
+   RECUPERAR PASSWORD
+========================================================= */
+
+function forgotPassword(){
+
+    alert(
+        "En esta versión no necesitas contraseña. Introduce cualquier correo que contenga @ y pulsa SIGN IN."
+    );
+
+}
+
+/* =========================================================
+   GOOGLE / APPLE
+========================================================= */
+
+function fakeSocial(provider){
+
+    alert(
+        "El inicio de sesión con " +
+        provider +
+        " requiere configurar OAuth."
+    );
+
+}
+
+/* =========================================================
+   BOTONES BOOK COURT
+========================================================= */
+
+document
+    .querySelectorAll(".go")
+    .forEach(function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                const user =
+                    localStorage.getItem("primeUser") ||
+                    sessionStorage.getItem("primeUser");
+
+                if(!user){
+
+                    openLogin();
+
+                    return;
+
+                }
+
+                alert(
+                    "Sesión iniciada como " +
+                    user +
+                    ". Ahora puedes continuar con la reserva."
+                );
+
+            }
+        );
+
+    });
+
+/* =========================================================
+   CARGAR USUARIO AL ABRIR LA PÁGINA
+========================================================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        checkLogin();
+
+    }
+);
+
+/* =========================================================
+   ESC PARA CERRAR LOGIN
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape" &&
+            document
+                .getElementById("loginOverlay")
+                .classList
+                .contains("active")
+        ){
+
+            closeLogin();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
