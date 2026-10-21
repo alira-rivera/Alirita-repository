@@ -634,175 +634,224 @@
      COURTS
 ========================================================= -->
 
-<section id="courts" class="courts">
+<!-- ===================================================================
+     SECCIÓN: CANCHAS + MAPA + RUTINAS
+     Pega TODO este bloque dentro del <body> de tu HTML, donde quieras.
+     Todo el CSS está aislado con el prefijo "fx-" para no afectar tu página.
+     =================================================================== -->
 
-    <div class="wrap">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 
-        <div class="ch">
+<style>
+.fx-app{--ink:#111;--muted:#7a7a7a;--accent:#ff5a00;--navy:#0f172a;--card:#f8f9fb;font-family:'Inter',sans-serif;color:var(--ink);line-height:1.4}
+.fx-app *,.fx-app *::before,.fx-app *::after{box-sizing:border-box}
+.fx-app h2,.fx-app h3,.fx-app h4,.fx-app p,.fx-app ol{margin:0;padding:0}
+.fx-sec{max-width:1240px;margin:0 auto;padding:60px 24px}
+.fx-display{font-family:'Anton',sans-serif;text-transform:uppercase;line-height:.95;font-size:clamp(42px,7vw,96px);letter-spacing:.5px;font-weight:400}
 
-            <div>
+.fx-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.fx-btn{background:var(--navy);color:#fff;border:0;border-radius:999px;padding:18px 38px;font:700 18px 'Inter',sans-serif;cursor:pointer;transition:.2s}
+.fx-btn:hover{transform:translateY(-2px);background:#1e2b4d}
+.fx-filters{display:flex;gap:10px;margin:36px 0 28px;flex-wrap:wrap}
+.fx-chip{border:1px solid #ddd;background:#fff;color:var(--ink);border-radius:999px;padding:14px 26px;font:500 17px 'Inter',sans-serif;cursor:pointer}
+.fx-chip.fx-active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:24px}
+.fx-court{background:var(--card);border:1px solid #eee;border-radius:26px;overflow:hidden;transition:.25s;cursor:pointer}
+.fx-court:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,.1)}
+.fx-court img{width:100%;height:260px;object-fit:cover;display:block;background:#d8dee8}
+.fx-body{padding:22px 24px 26px}
+.fx-court h3{font-size:21px;font-weight:700}
+.fx-court p{color:var(--muted);font-size:17px;margin-top:2px}
+.fx-price{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+.fx-price b{font-size:32px;font-weight:800}.fx-price span{color:var(--muted);font-size:15px}
+.fx-price a{font-size:22px;color:var(--ink);text-decoration:none}
 
-                <p class="lbl">
-                    Sports courts
-                </p>
+.fx-mapwrap{border-radius:28px;overflow:hidden;border:1px solid #e5e5e5;box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.fx-mapbar{display:flex;gap:10px;padding:14px;background:#fff;flex-wrap:wrap;align-items:center;border-bottom:1px solid #eee}
+.fx-mapbar input{flex:1;min-width:200px;padding:13px 18px;border:1px solid #ddd;border-radius:999px;font:16px 'Inter',sans-serif}
+.fx-mapbar button{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:13px 22px;font:600 15px 'Inter',sans-serif;cursor:pointer}
+#fx-map{height:520px;width:100%;z-index:0}
+.fx-pop h4{font-size:16px;margin-bottom:4px}.fx-pop p{margin:2px 0;font-size:14px;color:#555}
+.fx-pop a{display:inline-block;margin-top:8px;background:var(--navy);color:#fff!important;padding:7px 14px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:600}
 
-                <h2>
-                    Book your court in<br>
-                    under a minute.
-                </h2>
+.fx-blog h2{font-weight:800;font-size:clamp(34px,5vw,58px);text-transform:uppercase;letter-spacing:-1px}
+.fx-posts{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:26px;margin-top:40px}
+.fx-post{background:#fff;border-radius:26px;box-shadow:0 10px 40px rgba(0,0,0,.09);overflow:hidden;cursor:pointer;transition:.25s;display:flex;flex-direction:column}
+.fx-post:hover{transform:translateY(-6px)}
+.fx-post img{width:100%;height:230px;object-fit:cover;display:block;background:#ffd9c2}
+.fx-pb{padding:24px 30px 28px;flex:1;display:flex;flex-direction:column}
+.fx-tag{color:var(--accent);font-weight:700;font-size:14px;letter-spacing:1.5px;text-transform:uppercase}
+.fx-post h3{font-size:22px;font-weight:700;margin:8px 0 6px;line-height:1.25}
+.fx-post small{color:var(--muted);font-size:15px}
+.fx-arrow{font-size:28px;margin-top:auto;padding-top:18px}
 
-            </div>
+.fx-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:99999}
+.fx-modal.fx-open{display:flex}
+.fx-sheet{background:#fff;border-radius:28px;max-width:640px;width:100%;max-height:90vh;overflow:auto;position:relative}
+.fx-sheet img{width:100%;height:280px;object-fit:cover;display:block}
+.fx-in{padding:28px 32px 34px}
+.fx-sheet h3{font-size:30px;font-weight:800;margin:6px 0 14px}
+.fx-sheet ol{padding-left:22px;line-height:1.8;font-size:17px}
+.fx-meta{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}
+.fx-meta span{background:#f3f4f6;border-radius:999px;padding:7px 15px;font-size:14px;font-weight:600}
+.fx-close{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;border:0;background:#fff;color:#111;font-size:22px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+@media(max-width:640px){#fx-map{height:420px}.fx-btn{padding:15px 26px;font-size:16px}}
+</style>
 
-            <a
-                href="#"
-                class="map"
-            >
-                View Interactive Map
-            </a>
+<div class="fx-app" id="fx-root">
 
-        </div>
-
-        <div
-            class="flt"
-            id="flt"
-        >
-
-            <button
-                class="on2"
-                data-s="all"
-            >
-                All Sports
-            </button>
-
-        </div>
-
-        <div class="g3">
-
-            <article class="cc">
-
-                <div
-                    class="im"
-                    style="background-image:url('pool.jpg')"
-                ></div>
-
-                <div class="in">
-
-                    <h3>
-                        La Chorrera Municipal Pool
-                    </h3>
-
-                    <small>
-                        La Chorrera, Panama West
-                    </small>
-
-                    <div class="bt">
-
-                        <strong>
-                            $25
-                            <small>
-                                / hour
-                            </small>
-                        </strong>
-
-                        <span>
-                            ↗
-                        </span>
-
-                    </div>
-
-                    <button class="btn go">
-                        Book Court
-                    </button>
-
-                </div>
-
-            </article>
-
-            <article class="cc">
-
-                <div
-                    class="im"
-                    style="background-image:url('volley.jpg')"
-                ></div>
-
-                <div class="in">
-
-                    <h3>
-                        La Chorrera Volley Court
-                    </h3>
-
-                    <small>
-                        La Chorrera, Panama West
-                    </small>
-
-                    <div class="bt">
-
-                        <strong>
-                            $40
-                            <small>
-                                / hour
-                            </small>
-                        </strong>
-
-                        <span>
-                            ↗
-                        </span>
-
-                    </div>
-
-                    <button class="btn go">
-                        Book Court
-                    </button>
-
-                </div>
-
-            </article>
-
-            <article class="cc">
-
-                <div
-                    class="im"
-                    style="background-image:url('turf.jpg')"
-                ></div>
-
-                <div class="in">
-
-                    <h3>
-                        La Chorrera Turf Pitch
-                    </h3>
-
-                    <small>
-                        La Chorrera, Panama West
-                    </small>
-
-                    <div class="bt">
-
-                        <strong>
-                            $28
-                            <small>
-                                / hour
-                            </small>
-                        </strong>
-
-                        <span>
-                            ↗
-                        </span>
-
-                    </div>
-
-                    <button class="btn go">
-                        Book Court
-                    </button>
-
-                </div>
-
-            </article>
-
-        </div>
-
+  <!-- CANCHAS -->
+  <section class="fx-sec" id="fx-canchas">
+    <div class="fx-head">
+      <h2 class="fx-display">Reserva tu cancha en<br>menos de un minuto.</h2>
+      <button class="fx-btn" data-fx="ir-mapa">Ver mapa interactivo</button>
     </div>
+    <div class="fx-filters" id="fx-filters"></div>
+    <div class="fx-grid" id="fx-courts"></div>
+  </section>
 
-</section>
+  <!-- MAPA -->
+  <section class="fx-sec" id="fx-mapa" style="padding-top:20px">
+    <div class="fx-mapwrap">
+      <div class="fx-mapbar">
+        <input id="fx-search" placeholder="Buscar lugar o dirección (ej. La Chorrera)…">
+        <button data-fx="buscar">Buscar</button>
+        <button data-fx="ubicacion">📍 Mi ubicación</button>
+        <button data-fx="todas">Ver todas</button>
+      </div>
+      <div id="fx-map"></div>
+    </div>
+  </section>
+
+  <!-- RUTINAS -->
+  <section class="fx-sec fx-blog">
+    <h2>Salud, entrenamiento y comunidad.</h2>
+    <div class="fx-posts" id="fx-posts"></div>
+  </section>
+
+  <div class="fx-modal" id="fx-modal"><div class="fx-sheet" id="fx-sheet"></div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+(function(){
+  /* ====== EDITA AQUÍ TUS DATOS Y FOTOS (puedes usar tus propias rutas: "img/piscina.jpg") ====== */
+  var u = function(id){return "https://images.unsplash.com/"+id+"?auto=format&fit=crop&w=900&q=80";};
+
+  var courts = [
+    {name:"La Chorrera Municipal Pool", sport:"Natación", place:"La Chorrera, Panamá Oeste", price:25, lat:8.8806, lng:-79.7826, img:u("photo-1530549387789-4c1017266635")},
+    {name:"La Chorrera Volley Court",  sport:"Voleibol", place:"La Chorrera, Panamá Oeste", price:40, lat:8.8745, lng:-79.7769, img:u("photo-1612872087720-bb876e2e67d1")},
+    {name:"La Chorrera Turf Pitch",    sport:"Fútbol",   place:"La Chorrera, Panamá Oeste", price:28, lat:8.8868, lng:-79.7885, img:u("photo-1574629810360-7efbbe195018")}
+  ];
+  var routines = [
+    {title:"Rutina 1: Cardio por intervalos", date:"Jul 28, 2026", time:"30 min", level:"Intermedio", img:u("photo-1552674605-db6ffd4facb5"),
+     steps:["Trote suave: 5 min","Sprint 30 s / caminar 90 s × 8 rondas","Trote moderado: 5 min","Enfriamiento y estiramientos: 5 min"]},
+    {title:"Rutina 2: Circuito de fuerza y resistencia", date:"Jul 28, 2026", time:"40 min", level:"Todos", img:u("photo-1534438327276-14e5300c3a48"),
+     steps:["Sentadillas: 3×15","Flexiones: 3×12","Zancadas alternas: 3×12 por pierna","Remo con mancuerna: 3×12","Plancha: 3×40 s"]},
+    {title:"Rutina 3: Natación para resistencia", date:"Jul 28, 2026", time:"45 min", level:"Intermedio", img:u("photo-1530549387789-4c1017266635"),
+     steps:["Calentamiento: 200 m estilo libre suave","6 × 100 m con 20 s de descanso","4 × 50 m a ritmo fuerte","Enfriamiento: 150 m espalda"]},
+    {title:"Rutina 4: HIIT funcional en casa", date:"Jul 28, 2026", time:"25 min", level:"Avanzado", img:u("photo-1517836357463-d25dfeac3438"),
+     steps:["40 s ejercicio / 20 s descanso","Burpees · Mountain climbers · Jumping jacks · Sentadilla con salto","Repite el circuito 5 veces","Estira 5 min al finalizar"]}
+  ];
+  var ALL = "Todos los deportes";
+  /* ================================================================================== */
+
+  var $ = function(id){return document.getElementById(id);};
+  var sports = [ALL].concat(courts.map(function(c){return c.sport;}).filter(function(s,i,a){return a.indexOf(s)===i;}));
+  var current = ALL, markers = [];
+  var blank = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='10' height='10' fill='%23d8dee8'/%3E%3C/svg%3E";
+  var imgErr = "this.onerror=null;this.src='"+blank+"'";
+
+  function renderFilters(){
+    $("fx-filters").innerHTML = sports.map(function(s){
+      return '<button class="fx-chip '+(s===current?'fx-active':'')+'" data-sport="'+s+'">'+s+'</button>';
+    }).join("");
+  }
+  function renderCourts(){
+    $("fx-courts").innerHTML = courts.map(function(c,i){
+      if(current!==ALL && c.sport!==current) return "";
+      return '<article class="fx-court" data-court="'+i+'"><img src="'+c.img+'" alt="'+c.name+'" loading="lazy" onerror="'+imgErr+'">'+
+        '<div class="fx-body"><h3>'+c.name+'</h3><p>'+c.place+'</p><div class="fx-price"><div><b>$'+c.price+'</b> <span>/ hora</span></div><a href="#" onclick="return false">↗</a></div></div></article>';
+    }).join("");
+  }
+  function renderPosts(){
+    $("fx-posts").innerHTML = routines.map(function(r,i){
+      return '<article class="fx-post" data-post="'+i+'"><img src="'+r.img+'" alt="'+r.title+'" loading="lazy" onerror="'+imgErr+'">'+
+        '<div class="fx-pb"><span class="fx-tag">Training</span><h3>'+r.title+'</h3><small>'+r.date+' · Por Coach Ricardo</small><div class="fx-arrow">→</div></div></article>';
+    }).join("");
+  }
+
+  /* ---- Mapa ---- */
+  var map = L.map("fx-map").setView([8.8806,-79.7826],14);
+  var calles = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);
+  var sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Tiles © Esri"});
+  L.control.layers({"Mapa":calles,"Satélite":sat}).addTo(map);
+  L.control.scale().addTo(map);
+  var pin = L.divIcon({className:"",html:"<div style='background:#ff5a00;border:3px solid #fff;border-radius:50% 50% 50% 0;width:34px;height:34px;transform:rotate(-45deg);box-shadow:0 3px 10px rgba(0,0,0,.4)'></div>",iconSize:[34,34],iconAnchor:[17,34],popupAnchor:[0,-34]});
+
+  function syncMarkers(){
+    markers.forEach(function(m){map.removeLayer(m);}); markers=[];
+    courts.forEach(function(c,i){
+      if(current!==ALL && c.sport!==current) return;
+      var m = L.marker([c.lat,c.lng],{icon:pin}).addTo(map).bindPopup(
+        '<div class="fx-pop"><h4>'+c.name+'</h4><p>'+c.sport+' · $'+c.price+'/hora</p><p>'+c.place+'</p>'+
+        '<a target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+c.lat+','+c.lng+'">Cómo llegar</a></div>');
+      m._idx=i; markers.push(m);
+    });
+  }
+  function scrollMapa(){ $("fx-mapa").scrollIntoView({behavior:"smooth"}); setTimeout(function(){map.invalidateSize();},400); }
+  function irAlMapa(i){
+    scrollMapa(); map.flyTo([courts[i].lat,courts[i].lng],16);
+    setTimeout(function(){markers.forEach(function(m){ if(m._idx===i) m.openPopup(); });},1000);
+  }
+  function buscar(){
+    var q = $("fx-search").value.trim(); if(!q) return;
+    fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q="+encodeURIComponent(q))
+      .then(function(r){return r.json();})
+      .then(function(d){ if(d[0]) map.flyTo([+d[0].lat,+d[0].lon],16); else alert("No se encontró ese lugar"); })
+      .catch(function(){alert("Error al buscar. Intenta de nuevo.");});
+  }
+  function ubicacion(){
+    if(!navigator.geolocation) return alert("Tu navegador no permite geolocalización");
+    navigator.geolocation.getCurrentPosition(function(p){
+      var ll=[p.coords.latitude,p.coords.longitude];
+      L.circleMarker(ll,{radius:9,color:"#fff",weight:3,fillColor:"#1a73e8",fillOpacity:1}).addTo(map).bindPopup("Estás aquí");
+      map.flyTo(ll,15);
+    },function(){alert("No se pudo obtener tu ubicación");});
+  }
+  function todas(){ if(markers.length) map.fitBounds(markers.map(function(m){return m.getLatLng();}),{padding:[60,60]}); }
+
+  /* ---- Modal rutina ---- */
+  function abrir(i){
+    var r = routines[i];
+    $("fx-sheet").innerHTML = '<button class="fx-close" data-fx="cerrar">×</button><img src="'+r.img+'" alt="'+r.title+'" onerror="'+imgErr+'">'+
+      '<div class="fx-in"><span class="fx-tag">Training</span><h3>'+r.title+'</h3>'+
+      '<div class="fx-meta"><span>⏱ '+r.time+'</span><span>💪 '+r.level+'</span><span>👤 Coach Ricardo</span></div>'+
+      '<ol>'+r.steps.map(function(s){return "<li>"+s+"</li>";}).join("")+'</ol></div>';
+    $("fx-modal").classList.add("fx-open");
+  }
+  function cerrar(){ $("fx-modal").classList.remove("fx-open"); }
+
+  /* ---- Eventos (delegación) ---- */
+  $("fx-root").addEventListener("click",function(e){
+    var t = e.target;
+    var chip = t.closest("[data-sport]"); if(chip){ current=chip.getAttribute("data-sport"); renderFilters(); renderCourts(); syncMarkers(); return; }
+    var court = t.closest("[data-court]"); if(court){ irAlMapa(+court.getAttribute("data-court")); return; }
+    var post = t.closest("[data-post]"); if(post){ abrir(+post.getAttribute("data-post")); return; }
+    if(t === $("fx-modal")){ cerrar(); return; }
+    var act = t.closest("[data-fx]"); if(!act) return;
+    var a = act.getAttribute("data-fx");
+    if(a==="ir-mapa") scrollMapa(); else if(a==="buscar") buscar(); else if(a==="ubicacion") ubicacion();
+    else if(a==="todas") todas(); else if(a==="cerrar") cerrar();
+  });
+  $("fx-search").addEventListener("keydown",function(e){ if(e.key==="Enter") buscar(); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") cerrar(); });
+
+  renderFilters(); renderCourts(); renderPosts(); syncMarkers();
+})();
+</script>
+
 
 <!-- =========================================================
      SIGN IN
@@ -1330,68 +1379,6 @@
 
 </section>
 
-<!-- =========================================================
-     BLOG
-========================================================= -->
-
-<section
-    id="blog"
-    class="blog"
->
-
-    <div class="wrap">
-
-        <p class="lbl c">
-            Blog
-        </p>
-
-        <h2>
-            HEALTH, TRAINING AND COMMUNITY.
-        </h2>
-
-        <article class="bc">
-
-            <div
-                class="im"
-                style="
-                background-image:url('blog.jpg');
-                background-size:cover;
-                background-position:center
-                "
-            ></div>
-
-            <div class="in">
-
-                <span class="k">
-                    TRAINING
-                </span>
-
-                <h3>
-                    4 routines to boost your endurance
-                </h3>
-
-                <small>
-                    Jul 28, 2026 · By Coach Ricardo
-                </small>
-
-                <a href="#">
-                    →
-                </a>
-
-            </div>
-
-        </article>
-
-        <a
-            href="#"
-            class="rm"
-        >
-            Read More
-        </a>
-
-    </div>
-
-</section>
 
 <!-- =========================================================
      CONTACT
