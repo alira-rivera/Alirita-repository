@@ -853,372 +853,346 @@
 </script>
 
 
-<!-- =========================================================
-     SIGN IN
-========================================================= -->
 
-<section
-    id="signin"
-    class="sign"
->
 
-    <div class="wrap">
 
-        <hr>
+<!-- ===================================================================
+     SECCIÓN: COMMUNITY (Find players · Join matches · Build your team)
+     Pega TODO este bloque dentro del <body> de tu HTML.
+     CSS aislado con prefijo "fc-". JS encapsulado (no crea globales,
+     salvo window.FXCommunity para conectarlo con tu login).
+     =================================================================== -->
 
-        <div class="sh">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
 
-            <div>
+<style>
+.fc-app{--bg:#0a0a0a;--card:#141417;--line:#26262b;--ink:#fff;--muted:#8d8d96;--accent:#ff5a00;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.4}
+.fc-app *,.fc-app *::before,.fc-app *::after{box-sizing:border-box}
+.fc-app h2,.fc-app h3,.fc-app h4,.fc-app p{margin:0;padding:0}
+.fc-sec{max-width:1240px;margin:0 auto;padding:70px 24px 90px}
+.fc-eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.fc-eyebrow i{width:28px;height:3px;background:var(--accent);display:block}
+.fc-eyebrow span{font:700 12px 'Space Mono',monospace;letter-spacing:3px;color:var(--accent)}
+.fc-title{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(52px,9vw,104px);line-height:.95;margin-bottom:44px}
+.fc-title em{color:var(--accent);font-style:normal}
+.fc-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.fc-card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:36px 38px 56px;text-align:left;color:var(--ink);cursor:pointer;font-family:inherit;transition:.25s;min-height:228px;display:flex;flex-direction:column}
+.fc-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 18px 50px rgba(255,90,0,.12)}
+.fc-bar{width:40px;height:4px;background:var(--accent);border-radius:4px;display:block;margin-bottom:52px;transition:.25s}
+.fc-card:hover .fc-bar{width:70px}
+.fc-card h3{font-size:25px;font-weight:700;margin-bottom:6px}
+.fc-card p{color:var(--muted);font-size:17px}
 
-                <p class="lbl">
-                    Account
-                </p>
+/* Modal / panel */
+.fc-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:18px;z-index:99999}
+.fc-modal.fc-open{display:flex}
+.fc-panel{background:#101012;border:1px solid var(--line);border-radius:30px;width:100%;max-width:1000px;max-height:92vh;overflow:auto;padding:28px 32px 34px;position:relative}
+.fc-top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+.fc-top h3{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;font-size:38px;letter-spacing:.5px}
+.fc-top h3 em{color:var(--accent);font-style:normal}
+.fc-x{width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:#fff;font-size:20px;cursor:pointer}
+.fc-x:hover{border-color:var(--accent)}
+.fc-who{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 16px;margin-bottom:22px;flex-wrap:wrap}
+.fc-who.fc-guest{border-color:rgba(255,90,0,.5);background:rgba(255,90,0,.07)}
+.fc-av{width:42px;height:42px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none;overflow:hidden}
+.fc-av img{width:100%;height:100%;object-fit:cover}
+.fc-who small{color:var(--muted);display:block;font-size:13px}
+.fc-who b{font-size:16px}
+.fc-who .fc-sp{flex:1}
+.fc-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.fc-in,.fc-sel,.fc-ta{background:var(--card);border:1px solid var(--line);color:#fff;border-radius:14px;padding:13px 16px;font:500 15px 'Inter',sans-serif;outline:none;width:100%}
+.fc-in:focus,.fc-sel:focus,.fc-ta:focus{border-color:var(--accent)}
+.fc-filters .fc-in{flex:2;min-width:180px;width:auto}.fc-filters .fc-sel{flex:1;min-width:140px;width:auto}
+.fc-sel option{background:#141417}
+.fc-ta{resize:vertical;min-height:80px}
+.fc-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.fc-item{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.fc-row{display:flex;gap:14px;align-items:center}
+.fc-item h4{font-size:17px;font-weight:700}
+.fc-item p{color:var(--muted);font-size:14px}
+.fc-pill{display:inline-block;font:700 11px 'Space Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);border:1px solid rgba(255,90,0,.45);border-radius:999px;padding:4px 10px;width:fit-content}
+.fc-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}
+.fc-meta span{font-size:14px;color:var(--muted)}
+.fc-btn{background:var(--accent);color:#fff;border:0;border-radius:999px;padding:11px 22px;font:700 14px 'Inter',sans-serif;cursor:pointer;transition:.2s;white-space:nowrap}
+.fc-btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
+.fc-btn.fc-ghost{background:transparent;border:1px solid var(--line);color:#fff}
+.fc-btn.fc-ghost:hover{border-color:var(--accent)}
+.fc-btn[disabled]{opacity:.4;cursor:not-allowed;transform:none}
+.fc-h4{font:700 12px 'Space Mono',monospace;letter-spacing:2.5px;color:var(--accent);text-transform:uppercase;margin:26px 0 14px}
+.fc-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px}
+.fc-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted);font-weight:600}
+.fc-form .fc-full{grid-column:1/-1}
+.fc-empty{color:var(--muted);padding:24px;text-align:center;border:1px dashed var(--line);border-radius:18px;grid-column:1/-1}
+.fc-toast{position:sticky;bottom:0;margin-top:18px;background:#16a34a;color:#fff;font-weight:600;padding:12px 18px;border-radius:14px;display:none}
+.fc-toast.fc-show{display:block}
+.fc-card{position:relative}
+.fc-count{position:absolute;top:22px;right:24px;background:#16a34a;color:#fff;font:700 12px 'Inter',sans-serif;padding:6px 12px;border-radius:999px;display:none}
+.fc-count.fc-show{display:block}
+.fc-item{position:relative}
+.fc-item.fc-on{border-color:#16a34a;background:linear-gradient(180deg,rgba(22,163,74,.12),var(--card) 70%);box-shadow:0 0 0 1px rgba(22,163,74,.35)}
+.fc-badge{position:absolute;top:14px;right:14px;background:#16a34a;color:#fff;font:700 12px 'Inter',sans-serif;padding:5px 11px;border-radius:999px}
+.fc-okt{color:#4ade80!important;font-weight:700}
+.fc-sum{display:flex;gap:10px;flex-wrap:wrap;margin:-8px 0 22px}
+.fc-sum span{background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.4);color:#4ade80;font-weight:600;font-size:13px;padding:7px 14px;border-radius:999px}
+.fc-sum span.fc-zero{background:transparent;border-color:var(--line);color:var(--muted)}
+@media(max-width:640px){.fc-panel{padding:22px 18px}.fc-form{grid-template-columns:1fr}.fc-top h3{font-size:30px}}
+</style>
 
-            </div>
-
-            <a
-                href="#courts"
-                class="back"
-            >
-                ↑ Back to Courts
-            </a>
-
-        </div>
-
-        <h2>
-            Sign in
-        </h2>
-
-        <div class="two">
-
-            <form
-                id="mainLoginForm"
-            >
-
-                <div
-                    id="mainLoginError"
-                    style="
-                    display:none;
-                    padding:12px 15px;
-                    margin-bottom:15px;
-                    border-radius:10px;
-                    background:#fff0f0;
-                    color:#c62828;
-                    "
-                ></div>
-
-                <label class="fl">
-                    EMAIL
-                </label>
-
-                <input
-                    id="mainEmail"
-                    type="email"
-                    placeholder="youremail@example.com"
-                    required
-                >
-
-                <label class="fl">
-                    PASSWORD
-                </label>
-
-                <input
-                    id="mainPassword"
-                    type="password"
-                    placeholder="At least 8 characters"
-                >
-
-                <div class="row">
-
-                    <label>
-
-                        <input
-                            id="mainRemember"
-                            type="checkbox"
-                            style="width:auto;vertical-align:middle"
-                        >
-
-                        Remember me
-
-                    </label>
-
-                    <a
-                        href="javascript:void(0)"
-                        onclick="forgotPassword()"
-                    >
-                        Forgot password?
-                    </a>
-
-                </div>
-
-                <button
-                    class="btn"
-                    type="submit"
-                >
-                    Sign in
-                </button>
-
-                <div class="or">
-                    or continue with
-                </div>
-
-                <div class="soc">
-
-                    <button
-                        type="button"
-                        onclick="fakeSocial('Google')"
-                    >
-                        Google
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="fakeSocial('Apple')"
-                    >
-                        Apple
-                    </button>
-
-                </div>
-
-                <p class="note">
-
-                    Don't have an account?
-
-                    <a
-                        href="javascript:void(0)"
-                        onclick="openLogin()"
-                    >
-                        Create one
-                    </a>
-
-                </p>
-
-            </form>
-
-            <div class="faq">
-
-                <div class="q open">
-
-                    <button>
-                        How do I create an account?
-                        <b></b>
-                    </button>
-
-                    <p>
-                        Enter any valid email containing
-                        the @ symbol and click Sign in.
-                        No registration is required for
-                        this version of the application.
-                    </p>
-
-                </div>
-
-                <div class="q">
-
-                    <button>
-                        Is my data secure?
-                        <b></b>
-                    </button>
-
-                    <p>
-                        Your login session is stored locally
-                        in your browser.
-                    </p>
-
-                </div>
-
-                <div class="q">
-
-                    <button>
-                        Can I sign in with Google or Apple?
-                        <b></b>
-                    </button>
-
-                    <p>
-                        Google and Apple can be connected
-                        later using OAuth.
-                    </p>
-
-                </div>
-
-                <div class="q">
-
-                    <button>
-                        What if I forget my password?
-                        <b></b>
-                    </button>
-
-                    <p>
-                        No password is required for this
-                        version. Simply enter your email
-                        containing @ and sign in.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
+<div class="fc-app" id="fc-root">
+  <section class="fc-sec">
+    <div class="fc-eyebrow"><i></i><span>COMMUNITY</span></div>
+    <h2 class="fc-title">Find your<br>next <em>team.</em></h2>
+    <div class="fc-cards">
+      <button class="fc-card" data-open="players"><span class="fc-count" id="fc-c-players"></span><i class="fc-bar"></i><h3>Find players</h3><p>Discover athletes around you.</p></button>
+      <button class="fc-card" data-open="matches"><span class="fc-count" id="fc-c-matches"></span><i class="fc-bar"></i><h3>Join matches</h3><p>Find games and join the action.</p></button>
+      <button class="fc-card" data-open="team"><span class="fc-count" id="fc-c-team"></span><i class="fc-bar"></i><h3>Build your team</h3><p>Create your own sports community.</p></button>
     </div>
+  </section>
 
-</section>
+  <div class="fc-modal" id="fc-modal"><div class="fc-panel" id="fc-panel"></div></div>
+</div>
 
-<!-- =========================================================
-     FOOTER
-========================================================= -->
+<script>
+(function(){
+  /* ================================================================
+     1) CONECTA AQUÍ TU SESIÓN (lo más importante)
+     Devuelve el usuario que inició sesión en TU página, o null.
+     Formato: { id:"123", name:"Ana Pérez", avatar:"url (opcional)", sport:"Football (opcional)", city:"La Chorrera (opcional)" }
+     ================================================================ */
+  var LOGIN_URL = "";   // OPCIONAL: ruta REAL de tu login (ej. "/login.html"). Si lo dejas vacío, se usa un mini formulario integrado (no da "not found").
+  function norm(u){ if(!u || typeof u!=="object") return null; var n=u.name||u.displayName||u.username||u.email, i=u.id||u.uid||u.email||n; return (n&&i)?Object.assign({},u,{id:String(i),name:String(n)}):null; }
+  function getCurrentUser(){
+    // Opción A: tu login ya guarda al usuario en una variable global
+    if (norm(window.currentUser)) return window.currentUser;
+    // Opción B: tu login lo guarda en localStorage con la clave "user"
+    try { var s = localStorage.getItem("user"); if (s) { var pu = JSON.parse(s); if (norm(pu)) return pu; } } catch(e){}
+    // Opción C (Firebase):  var f = firebase.auth().currentUser; return f && {id:f.uid, name:f.displayName||f.email, avatar:f.photoURL};
+    // Opción D (Supabase):  usa window.FXCommunity.setUser({...}) cuando cambie la sesión.
+    // Respaldo: cuenta rápida creada en el mini formulario de esta sección
+    try { var l = localStorage.getItem("fc:localuser"); if (l) { var lu = JSON.parse(l); if (norm(lu)) return lu; } } catch(e){}
+    return null;
+  }
+  /* Si tu login es un popup/modal en vez de una página, pon aquí tu función: */
+  function openLogin(){
+    if (typeof window.openLoginModal === "function") return window.openLoginModal();
+    if (LOGIN_URL) { location.href = LOGIN_URL; return; }
+    if (view !== "login") prevView = view || "players";
+    view = "login"; $("fc-modal").classList.add("fc-open"); document.body.style.overflow = "hidden"; render();
+  }
 
-<footer class="light">
+  /* ================================================================
+     2) DATOS DE EJEMPLO (reemplázalos por los de tu base de datos)
+     ================================================================ */
+  var SPORTS = ["Football","Volleyball","Swimming","Basketball","Tennis","Padel"];
+  var LEVELS = ["Beginner","Intermediate","Advanced"];
+  var PLAYERS = [
+    {id:"p1", name:"Carlos Mendoza", sport:"Football", level:"Advanced", zone:"La Chorrera", km:1.2},
+    {id:"p2", name:"Valeria Ríos", sport:"Volleyball", level:"Intermediate", zone:"La Chorrera", km:2.4},
+    {id:"p3", name:"Andrés Castillo", sport:"Basketball", level:"Beginner", zone:"Arraiján", km:6.8},
+    {id:"p4", name:"Sofía Herrera", sport:"Swimming", level:"Advanced", zone:"La Chorrera", km:0.9},
+    {id:"p5", name:"Diego Barría", sport:"Football", level:"Intermediate", zone:"Capira", km:9.5},
+    {id:"p6", name:"Camila Ortega", sport:"Padel", level:"Intermediate", zone:"Panamá Oeste", km:4.1},
+    {id:"p7", name:"Luis Pinzón", sport:"Tennis", level:"Beginner", zone:"La Chorrera", km:3.3},
+    {id:"p8", name:"Marta Samaniego", sport:"Volleyball", level:"Advanced", zone:"Arraiján", km:7.2}
+  ];
+  var MATCHES = [
+    {id:"m1", sport:"Football", title:"5v5 Night Game", court:"La Chorrera Turf Pitch", day:0, time:"19:00", max:10, taken:7, price:5},
+    {id:"m2", sport:"Volleyball", title:"Beach-style Volley Mix", court:"La Chorrera Volley Court", day:1, time:"17:30", max:12, taken:8, price:4},
+    {id:"m3", sport:"Swimming", title:"Open Lane Training", court:"La Chorrera Municipal Pool", day:1, time:"06:30", max:8, taken:8, price:3},
+    {id:"m4", sport:"Basketball", title:"3x3 Pickup", court:"Arraiján Court", day:2, time:"18:00", max:6, taken:3, price:2},
+    {id:"m5", sport:"Padel", title:"Doubles Social", court:"Panamá Oeste Padel Club", day:3, time:"20:00", max:4, taken:2, price:8}
+  ];
+  var OPEN_TEAMS = [
+    {id:"t1", name:"Chorrera FC", sport:"Football", zone:"La Chorrera", members:11, max:18, desc:"Friendly weekend league team."},
+    {id:"t2", name:"Net Breakers", sport:"Volleyball", zone:"Arraiján", members:7, max:12, desc:"Mixed team, all levels."},
+    {id:"t3", name:"Lane Runners", sport:"Swimming", zone:"La Chorrera", members:5, max:10, desc:"Early-morning swim group."}
+  ];
 
-    <div class="wrap">
+  /* ================================================================
+     3) LÓGICA (no necesitas tocar de aquí hacia abajo)
+     ================================================================ */
+  var $ = function(id){return document.getElementById(id);};
+  var esc = function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});};
+  var localUser = null, prevView = "players", user = null, view = null, f = {q:"",sport:"",level:""}, mf = "";
 
-        <div class="fg">
+  /* Guardado por usuario (localStorage). Para varios usuarios reales, reemplaza load/save por llamadas a tu backend. */
+  function key(){ return "fc:" + (user ? user.id : "guest"); }
+  function load(){ try { return Object.assign({connections:[],matches:[],teams:[],joinedTeams:[]}, JSON.parse(localStorage.getItem(key())||"{}")); } catch(e){ return {connections:[],matches:[],teams:[],joinedTeams:[]}; } }
+  function save(){ try { localStorage.setItem(key(), JSON.stringify(S)); } catch(e){} }
+  var S = load();
 
-            <div>
+  function syncUser(){ user = norm(getCurrentUser()) || norm(localUser); S = load(); updateBadges(); }
+  function initials(n){ return (n||"?").split(" ").map(function(w){return w[0];}).slice(0,2).join("").toUpperCase(); }
+  function avatar(n, url){ return '<div class="fc-av">'+(url?'<img src="'+esc(url)+'" alt="">':esc(initials(n)))+'</div>'; }
+  function whenLabel(m){
+    var d = new Date(); d.setDate(d.getDate()+m.day);
+    var lbl = m.day===0?"Today":m.day===1?"Tomorrow":d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+    var p = m.time.split(":"), h = +p[0], ap = h>=12?"PM":"AM"; h = h%12||12;
+    return lbl+" · "+h+":"+p[1]+" "+ap;
+  }
+  function toast(msg){ var t = $("fc-toast"); if(!t) return; t.textContent = msg; t.classList.add("fc-show"); clearTimeout(toast._t); toast._t = setTimeout(function(){t.classList.remove("fc-show");},3800); }
+  function needLogin(){ if (user) return false; openLogin(); return true; }
 
-                <div class="lg">
-                    PRIME<i>.</i>
-                </div>
+  /* ---- Cabecera con la cuenta ---- */
+  function whoBar(action){
+    if (user) {
+      var c = S.connections.length, m = S.matches.length, t = S.teams.length + S.joinedTeams.length;
+      return '<div class="fc-who">'+avatar(user.name,user.avatar)+'<div><small>'+action+' as</small><b>'+esc(user.name)+'</b>'+
+        ((user.sport||user.city)?'<small>'+esc([user.sport,user.city].filter(Boolean).join(" · "))+'</small>':'')+'</div>'+
+        (String(user.id).indexOf("local-")===0?'<span class="fc-sp"></span><button class="fc-btn fc-ghost" data-act="logout">Switch account</button>':'')+'</div>'+
+        '<div class="fc-sum"><span class="'+(c?'':'fc-zero')+'">'+c+' request'+(c===1?'':'s')+' sent</span><span class="'+(m?'':'fc-zero')+'">'+m+' match'+(m===1?'':'es')+' joined</span><span class="'+(t?'':'fc-zero')+'">'+t+' team'+(t===1?'':'s')+'</span></div>';
+    }
+    return '<div class="fc-who fc-guest"><div class="fc-av">?</div><div><small>Browsing as guest</small><b>Log in to use your account</b></div><span class="fc-sp"></span><button class="fc-btn" data-act="login">Log in</button></div>';
+  }
+  function viewLogin(){
+    return head('Join the <em>community</em>') +
+      '<div class="fc-form" id="fc-login"><label class="fc-full">Your name<input class="fc-in" name="name" required maxlength="30" placeholder="e.g. Ana Pérez"></label>'+
+      '<label>Favorite sport<select class="fc-sel" name="sport">'+sportOpts("")+'</select></label>'+
+      '<label>Zone<input class="fc-in" name="city" maxlength="40" placeholder="La Chorrera"></label>'+
+      '<div class="fc-full"><button class="fc-btn" type="button" data-act="dologin">Continue</button></div></div>'+
+      '<p style="color:var(--muted);font-size:13px;margin-top:12px">Tip: connect your website login (see getCurrentUser) to use the real account.</p>'+
+      '<div class="fc-toast" id="fc-toast"></div>';
+  }
+  function updateBadges(){
+    var c = S.connections.length, m = S.matches.length, t = S.teams.length + S.joinedTeams.length;
+    [["players",c,c+" sent"],["matches",m,m+" joined"],["team",t,t+(t===1?" team":" teams")]].forEach(function(x){
+      var el = $("fc-c-"+x[0]); if(!el) return; el.textContent = "✓ "+x[2]; el.classList.toggle("fc-show", x[1]>0);
+    });
+  }
+  function head(t){ return '<div class="fc-top"><h3>'+t+'</h3><button class="fc-x" data-act="close" aria-label="Close">✕</button></div>'; }
+  function sportOpts(sel,all){ return (all?'<option value="">'+all+'</option>':'')+SPORTS.map(function(s){return '<option '+(s===sel?'selected':'')+'>'+s+'</option>';}).join(""); }
 
-                <p>
-                    Connect, train, and play.
-                    The platform that unites
-                    the sports community.
-                </p>
+  /* ---- Find players ---- */
+  function viewPlayers(){
+    var list = PLAYERS.filter(function(p){
+      if (user && p.id===user.id) return false;
+      var q = f.q.toLowerCase();
+      return (!q || (p.name+" "+p.zone).toLowerCase().indexOf(q)>-1) && (!f.sport||p.sport===f.sport) && (!f.level||p.level===f.level);
+    });
+    if (user && user.sport) list.sort(function(a,b){return (b.sport===user.sport)-(a.sport===user.sport);});
+    return head('Find <em>players</em>') + whoBar("Searching") +
+      '<div class="fc-filters"><input class="fc-in" id="fc-q" placeholder="Search by name or zone…" value="'+esc(f.q)+'">'+
+      '<select class="fc-sel" id="fc-fs">'+sportOpts(f.sport,"All sports")+'</select>'+
+      '<select class="fc-sel" id="fc-fl"><option value="">All levels</option>'+LEVELS.map(function(l){return '<option '+(l===f.level?'selected':'')+'>'+l+'</option>';}).join("")+'</select></div>'+
+      '<div class="fc-list">'+(list.length?list.map(function(p){
+        var sent = S.connections.indexOf(p.id)>-1;
+        return '<div class="fc-item'+(sent?' fc-on':'')+'">'+(sent?'<span class="fc-badge">✓ Request sent</span>':'')+'<div class="fc-row">'+avatar(p.name)+'<div><h4>'+esc(p.name)+'</h4><p>'+esc(p.zone)+' · '+p.km+' km</p></div></div>'+
+          '<div style="display:flex;gap:8px;flex-wrap:wrap"><span class="fc-pill">'+p.sport+'</span><span class="fc-pill" style="color:#fff;border-color:var(--line)">'+p.level+'</span>'+
+          ((user&&user.sport===p.sport)?'<span class="fc-pill">Matches your sport</span>':'')+'</div>'+
+          '<div class="fc-meta"><span class="'+(sent?'fc-okt':'')+'">'+(sent?'Waiting for '+esc(p.name.split(" ")[0])+' to accept':'')+'</span><button class="fc-btn '+(sent?'fc-ghost':'')+'" data-act="connect" data-id="'+p.id+'">'+(sent?'Cancel':'Connect')+'</button></div></div>';
+      }).join(""):'<div class="fc-empty">No players match your search.</div>')+'</div>'+
+      '<div class="fc-toast" id="fc-toast"></div>';
+  }
 
-                <div class="so">
-                    <span>IG</span>
-                    <span>FB</span>
-                    <span>TT</span>
-                </div>
+  /* ---- Join matches ---- */
+  function viewMatches(){
+    var list = MATCHES.filter(function(m){return !mf||m.sport===mf;});
+    return head('Join <em>matches</em>') + whoBar("Joining") +
+      '<div class="fc-filters"><select class="fc-sel" id="fc-ms">'+sportOpts(mf,"All sports")+'</select></div>'+
+      '<div class="fc-list">'+(list.length?list.map(function(m){
+        var mine = S.matches.indexOf(m.id)>-1, left = m.max-m.taken-(mine?1:0), full = left<=0 && !mine;
+        return '<div class="fc-item'+(mine?' fc-on':'')+'">'+(mine?'<span class="fc-badge">✓ You joined</span>':'')+'<span class="fc-pill">'+m.sport+'</span><div><h4>'+esc(m.title)+'</h4><p>'+esc(m.court)+'</p><p>'+whenLabel(m)+'</p></div>'+
+          '<div class="fc-meta"><span class="'+(mine?'fc-okt':'')+'">'+(mine?"✓ You're going · ":"")+(full?'Full':left+' spot'+(left===1?'':'s')+' left')+' · $'+m.price+'</span>'+
+          '<button class="fc-btn '+(mine?'fc-ghost':'')+'" data-act="join" data-id="'+m.id+'" '+(full?'disabled':'')+'>'+(mine?'Leave match':'Join')+'</button></div></div>';
+      }).join(""):'<div class="fc-empty">No matches for this sport yet.</div>')+'</div>'+
+      '<div class="fc-toast" id="fc-toast"></div>';
+  }
 
-            </div>
+  /* ---- Build your team ---- */
+  function viewTeam(){
+    var mine = S.teams.map(function(t){
+      return '<div class="fc-item fc-on"><span class="fc-badge">Captain</span><span class="fc-pill">'+t.sport+(t.priv?' · Private':' · Public')+'</span><div><h4>'+esc(t.name)+'</h4><p>'+esc(t.zone||"—")+' · '+t.members+'/'+t.max+' members</p>'+(t.desc?'<p>'+esc(t.desc)+'</p>':'')+'</div>'+
+        '<div class="fc-meta"><span>Invite code: <b style="color:#fff">'+t.code+'</b></span><button class="fc-btn fc-ghost" data-act="delteam" data-id="'+t.id+'">Delete</button></div></div>';
+    }).join("");
+    var open = OPEN_TEAMS.map(function(t){
+      var j = S.joinedTeams.indexOf(t.id)>-1, n = t.members+(j?1:0);
+      return '<div class="fc-item'+(j?' fc-on':'')+'">'+(j?'<span class="fc-badge">✓ You are a member</span>':'')+'<span class="fc-pill">'+t.sport+'</span><div><h4>'+esc(t.name)+'</h4><p>'+esc(t.zone)+' · '+n+'/'+t.max+' members</p><p>'+esc(t.desc)+'</p></div>'+
+        '<div class="fc-meta"><span></span><button class="fc-btn '+(j?'fc-ghost':'')+'" data-act="jointeam" data-id="'+t.id+'" '+((n>=t.max&&!j)?'disabled':'')+'>'+(j?'Leave':'Join team')+'</button></div></div>';
+    }).join("");
+    return head('Build your <em>team</em>') + whoBar("Creating") +
+      '<div class="fc-form" id="fc-form">'+
+        '<label class="fc-full">Team name<input class="fc-in" name="name" required maxlength="40" placeholder="e.g. Chorrera Strikers"></label>'+
+        '<label>Sport<select class="fc-sel" name="sport">'+sportOpts(user&&user.sport)+'</select></label>'+
+        '<label>Zone<input class="fc-in" name="zone" maxlength="40" placeholder="La Chorrera" value="'+esc(user&&user.city||"")+'"></label>'+
+        '<label>Max members<input class="fc-in" type="number" name="max" min="2" max="50" value="12"></label>'+
+        '<label>Privacy<select class="fc-sel" name="priv"><option value="0">Public (anyone can join)</option><option value="1">Private (invite only)</option></select></label>'+
+        '<label class="fc-full">Description<textarea class="fc-ta" name="desc" maxlength="160" placeholder="What is your team about?"></textarea></label>'+
+        '<div class="fc-full"><button class="fc-btn" type="button" data-act="mkteam">Create team</button></div></div>'+
+      '<div class="fc-h4">Your teams</div><div class="fc-list">'+(mine||'<div class="fc-empty">You haven\'t created a team yet.</div>')+'</div>'+
+      '<div class="fc-h4">Open teams to join</div><div class="fc-list">'+open+'</div>'+
+      '<div class="fc-toast" id="fc-toast"></div>';
+  }
 
-            <div>
+  function render(){
+    if (!view) return;
+    var keepScroll = $("fc-panel").scrollTop;
+    $("fc-panel").innerHTML = view==="login"?viewLogin():view==="players"?viewPlayers():view==="matches"?viewMatches():viewTeam(); updateBadges();
+    $("fc-panel").scrollTop = keepScroll;
+  }
+  function open(v){ syncUser(); view = v; $("fc-modal").classList.add("fc-open"); document.body.style.overflow="hidden"; render(); $("fc-panel").scrollTop=0; }
+  function close(){ view = null; $("fc-modal").classList.remove("fc-open"); document.body.style.overflow=""; }
+  function toggle(arr,id){ var i = arr.indexOf(id); if(i>-1) arr.splice(i,1); else arr.push(id); return i===-1; }
 
-                <h4>
-                    NAVIGATION
-                </h4>
+  /* ---- Eventos ---- */
+  $("fc-root").addEventListener("click",function(e){
+    var t = e.target;
+    var o = t.closest("[data-open]"); if(o){ open(o.getAttribute("data-open")); return; }
+    if (t === $("fc-modal")){ close(); return; }
+    var a = t.closest("[data-act]"); if(!a) return;
+    var act = a.getAttribute("data-act"), id = a.getAttribute("data-id");
+    if (act==="close") return close();
+    if (act==="login") return openLogin();
+    if (act==="logout"){ localUser=null; try{ localStorage.removeItem("fc:localuser"); }catch(x){} syncUser(); render(); return; }
+    if (act==="dologin") return doLogin();
+    if (needLogin()) return;
+    if (act==="mkteam") return doTeam();
+    if (act==="connect"){ var on = toggle(S.connections,id); save(); render(); toast(on?"✓ Request sent! "+user.name+", you'll be notified when they accept.":"Request cancelled"); }
+    else if (act==="join"){ var j = toggle(S.matches,id); save(); render(); toast(j?"✓ Done! "+user.name+", you joined the match.":"You left the match"); }
+    else if (act==="jointeam"){ var jt = toggle(S.joinedTeams,id); save(); render(); toast(jt?"✓ Welcome to the team, "+user.name+"!":"You left the team"); }
+    else if (act==="delteam"){ S.teams = S.teams.filter(function(x){return x.id!==id;}); save(); render(); toast("Team deleted"); }
+  });
+  $("fc-root").addEventListener("input",function(e){
+    if (e.target.id==="fc-q"){ f.q = e.target.value; var pos = e.target.selectionStart; render(); var el = $("fc-q"); if(el){ el.focus(); el.setSelectionRange(pos,pos); } }
+  });
+  $("fc-root").addEventListener("change",function(e){
+    if (e.target.id==="fc-fs"){ f.sport = e.target.value; render(); }
+    else if (e.target.id==="fc-fl"){ f.level = e.target.value; render(); }
+    else if (e.target.id==="fc-ms"){ mf = e.target.value; render(); }
+  });
+  function fv(box,name){ var b=$(box), el=b&&b.querySelector('[name="'+name+'"]'); return el?el.value:""; }
+  function doLogin(){
+    var nm = fv("fc-login","name").trim();
+    if (!nm){ toast("Please type your name"); var el=$("fc-login").querySelector('[name="name"]'); if(el) el.focus(); return; }
+    var u = {id:"local-"+(nm.toLowerCase().replace(/[^a-z0-9]+/g,"-")||"user"), name:nm, sport:fv("fc-login","sport"), city:fv("fc-login","city").trim()};
+    localUser = u; try{ localStorage.setItem("fc:localuser", JSON.stringify(u)); }catch(x){}
+    syncUser(); view = prevView || "players"; render(); toast("✓ Welcome, "+nm+"!");
+  }
+  function doTeam(){
+    var nm = fv("fc-form","name").trim();
+    if (!nm){ toast("Give your team a name"); var el=$("fc-form").querySelector('[name="name"]'); if(el) el.focus(); return; }
+    S.teams.unshift({id:"u"+Date.now(), owner:user.id, name:nm, sport:fv("fc-form","sport"), zone:fv("fc-form","zone").trim(),
+      max:Math.max(2,Math.min(50,+fv("fc-form","max")||12)), members:1, priv:fv("fc-form","priv")==="1", desc:fv("fc-form","desc").trim(),
+      code:Math.random().toString(36).slice(2,7).toUpperCase()});
+    save(); render(); toast("✓ Team created! You are the captain, "+user.name+".");
+  }
+  $("fc-root").addEventListener("keydown",function(e){
+    if (e.key!=="Enter" || e.target.tagName!=="INPUT") return;
+    if ($("fc-login") && $("fc-login").contains(e.target)){ e.preventDefault(); doLogin(); }
+    else if ($("fc-form") && $("fc-form").contains(e.target)){ e.preventDefault(); if(!needLogin()) doTeam(); }
+  });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") close(); });
 
-                <ul>
-                    <li>Home</li>
-                    <li>Courts</li>
-                    <li>Coaches</li>
-                </ul>
-
-            </div>
-
-            <div>
-
-                <h4>
-                    COMMUNITY
-                </h4>
-
-                <ul>
-                    <li>Groups</li>
-                    <li>Blog</li>
-                </ul>
-
-            </div>
-
-            <div>
-
-                <h4>
-                    LEGAL
-                </h4>
-
-                <ul>
-                    <li>
-                        Terms and conditions
-                    </li>
-                </ul>
-
-            </div>
-
-        </div>
-
-        <div class="cp">
-            © 2026 Prime. All rights reserved.
-        </div>
-
-    </div>
-
-</footer>
-
-<!-- =========================================================
-     COMMUNITY
-========================================================= -->
-
-<section
-    id="community"
-    class="cm"
->
-
-    <div class="wrap">
-
-        <p class="lbl">
-            Community
-        </p>
-
-        <h2>
-            Find your<br>
-            next <span class="on">
-                team.
-            </span>
-        </h2>
-
-        <div
-            class="g3"
-            style="margin-top:34px"
-        >
-
-            <div class="cd">
-
-                <i></i>
-
-                <h3>
-                    Find players
-                </h3>
-
-                <p>
-                    Discover athletes around you.
-                </p>
-
-            </div>
-
-            <div class="cd">
-
-                <i></i>
-
-                <h3>
-                    Join matches
-                </h3>
-
-                <p>
-                    Find games and join the action.
-                </p>
-
-            </div>
-
-            <div class="cd">
-
-                <i></i>
-
-                <h3>
-                    Build your team
-                </h3>
-
-                <p>
-                    Create your own sports community.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
+  /* Para conectarlo con tu login desde fuera:
+       window.FXCommunity.setUser({id:"1", name:"Ana"});   // al iniciar sesión
+       window.FXCommunity.setUser(null);                   // al cerrar sesión   */
+  window.FXCommunity = {
+    setUser:function(u){ window.currentUser = u || null; syncUser(); render(); },
+    refresh:function(){ syncUser(); render(); }
+  };
+  window.addEventListener("fx-user-change", function(){ syncUser(); render(); });
+  syncUser();
+})();
+</script>
 
 <!-- =========================================================
      IMPACT
