@@ -1,0 +1,293 @@
+</body>
+</html>
+```
+<!-- ===================================================================
+     SELECTOR DE IDIOMA  EN | ES
+     Pega TODO este bloque justo antes de cerrar el body (después de tu último bloque de script).
+     - Crea solo el botón y lo coloca en tu header (antes del botón ☰).
+     - Traduce toda la página, incluidas las secciones que se generan con JavaScript
+       (canchas, mapa, rutinas, comunidad, login) y los avisos (alert).
+     - Recuerda el idioma elegido. Por defecto abre en inglés.
+     - Para traducir un texto nuevo, agrégalo en la lista "P" de abajo: ["inglés","español"].
+     =================================================================== -->
+
+<style>
+.pl-lang{display:inline-flex;align-items:center;gap:2px;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:3px;background:rgba(255,255,255,.06);cursor:pointer;margin:0 12px;flex:none;font-family:'Inter',sans-serif}
+.pl-lang span{font-size:12px;font-weight:800;letter-spacing:1px;line-height:1;padding:7px 12px;border-radius:999px;color:#fff;transition:.2s}
+.pl-lang span.on{background:#ff4b0b;color:#fff}
+.pl-lang:hover{border-color:#ff4b0b}
+.pl-lang.pl-fixed{position:fixed;right:16px;bottom:16px;z-index:100000;background:#111;margin:0;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+</style>
+
+<script>
+(function(){
+  var KEY = "primeLang", DEFAULT = "en", lang = "en";
+
+  /* ======================= DICCIONARIO  ["English", "Español"] ======================= */
+  var P = [
+    /* ---- Header / navegación ---- */
+    ["Home","Inicio"],["Courts","Canchas"],["Community","Comunidad"],["Blog","Blog"],["Contact","Contacto"],
+    ["Sign In","Iniciar sesión"],["Logout","Cerrar sesión"],["Menu","Menú"],["Close","Cerrar"],
+
+    /* ---- Hero ---- */
+    ["Sports platform","Plataforma deportiva"],
+    ["Connect, train","Conecta, entrena"],["and play,","y juega,"],["with","con"],
+    ["Find courts, meet certified coaches, and organize matches with a sports community all in one place.","Encuentra canchas, conoce entrenadores certificados y organiza partidos con una comunidad deportiva, todo en un solo lugar."],
+    ["Courts Available","Canchas disponibles"],["Certified Coaches","Entrenadores certificados"],["Active Users","Usuarios activos"],
+
+    /* ---- Perfil ---- */
+    ["Your profile","Tu perfil"],["Your progress, always in view.","Tu progreso, siempre a la vista."],
+    ["A personal dashboard with your favorite sports, stats, and upcoming matches, ready as soon as you log in.","Un panel personal con tus deportes favoritos, estadísticas y próximos partidos, listo apenas inicies sesión."],
+    ["Panama City","Ciudad de Panamá"],["Intermediate level","Nivel intermedio"],
+    ["Soccer 5-a-side","Fútbol 5"],["Running","Correr"],
+    ["Matches","Partidos"],["Workouts","Entrenamientos"],["Achievements","Logros"],
+    ["Upcoming matches","Próximos partidos"],["Soccer 5","Fútbol 5"],
+    ["Coaching session","Sesión de entrenamiento"],
+    ["La Chorrera Fair Sports Complex","Complejo Deportivo de La Feria de La Chorrera"],
+
+    /* ---- Impacto ---- */
+    ["Prime impact","Impacto de Prime"],["The scoreboard","El marcador"],["speaks for us.","habla por nosotros."],
+    ["Matches per week","Partidos por semana"],["Active users","Usuarios activos"],["Coaches","Entrenadores"],
+    ["\"Thanks to Prime I found a team to play with every week. It completely changed my routine.\"","\"Gracias a Prime encontré un equipo para jugar cada semana. Cambió por completo mi rutina.\""],
+    ["\"Booking courts now takes less than a minute. I no longer waste time calling anyone.\"","\"Reservar canchas ahora toma menos de un minuto. Ya no pierdo tiempo llamando a nadie.\""],
+    ["\"I found a certified coach near my home. My level improved within weeks.\"","\"Encontré un entrenador certificado cerca de mi casa. Mi nivel mejoró en pocas semanas.\""],
+    ["Soccer 5 player","Jugadora de fútbol 5"],["Match organizer","Organizador de partidos"],["Padel player","Jugadora de pádel"],
+
+    /* ---- Contacto ---- */
+    ["Let's talk?","¿Hablamos?"],["Name","Nombre"],["Email","Correo"],["Message","Mensaje"],
+    ["Your full name","Tu nombre completo"],["you@example.com","tu@ejemplo.com"],
+    ["Tell us how we can help","Cuéntanos cómo podemos ayudarte"],["Send message","Enviar mensaje"],
+    ["How do I book a court?","¿Cómo reservo una cancha?"],
+    ["Explore the court map, filter by sport and schedule, and confirm your booking in seconds.","Explora el mapa de canchas, filtra por deporte y horario, y confirma tu reserva en segundos."],
+    ["Can I cancel a booking?","¿Puedo cancelar una reserva?"],
+    ["Yes, you can cancel from your profile before the match starts.","Sí, puedes cancelar desde tu perfil antes de que empiece el partido."],
+
+    /* ---- Footer ---- */
+    ["Connect, train, and play. The platform that unites the sports community.","Conecta, entrena y juega. La plataforma que une a la comunidad deportiva."],
+    ["Navigation","Navegación"],["Groups","Grupos"],["Legal","Legal"],["Terms and conditions","Términos y condiciones"],
+    ["© 2026 Prime. All rights reserved.","© 2026 Prime. Todos los derechos reservados."],
+
+    /* ---- Login ---- */
+    ["Account","Cuenta"],["Sign in","Iniciar sesión"],["Password","Contraseña"],
+    ["youremail@example.com","tucorreo@ejemplo.com"],["At least 8 characters","Al menos 8 caracteres"],
+    ["Remember me","Recordarme"],["Forgot password?","¿Olvidaste tu contraseña?"],["or continue with","o continúa con"],
+    ["How do I create an account?","¿Cómo creo una cuenta?"],
+    ["Enter your email containing the @ symbol and press \"Sign in\". No password is required for this version of Prime.","Escribe tu correo con el símbolo @ y presiona \"Iniciar sesión\". En esta versión de Prime no se requiere contraseña."],
+    ["Is my data secure?","¿Mis datos están seguros?"],
+    ["Your login session is saved in your browser so the page remembers you.","Tu sesión se guarda en tu navegador para que la página te recuerde."],
+    ["Can I sign in with Google or Apple?","¿Puedo iniciar sesión con Google o Apple?"],
+    ["Google and Apple can be connected later with OAuth.","Google y Apple se pueden conectar más adelante con OAuth."],
+    ["What if I forget my password?","¿Y si olvido mi contraseña?"],
+    ["You don't need a password in this version. Just enter any valid email containing @.","En esta versión no necesitas contraseña. Solo escribe cualquier correo válido que contenga @."],
+    ["Enter a valid email containing @.","Introduce un correo válido que contenga @."],
+    ["You have been signed out successfully.","Has cerrado sesión correctamente."],
+    ["In this version you don't need a password. Enter any email containing @ and press SIGN IN.","En esta versión no necesitas contraseña. Introduce cualquier correo que contenga @ y pulsa SIGN IN."],
+
+    /* ---- Canchas + mapa + rutinas (sección fx) ---- */
+    ["Book your court in","Reserva tu cancha en"],["under a minute.","menos de un minuto."],
+    ["View interactive map","Ver mapa interactivo"],
+    ["Search a place or address (e.g. La Chorrera)…","Buscar lugar o dirección (ej. La Chorrera)…"],
+    ["Search","Buscar"],["My location","Mi ubicación"],["View all","Ver todas"],
+    ["Health, training and community.","Salud, entrenamiento y comunidad."],
+    ["All sports","Todos los deportes"],["/ hour","/ hora"],["Get directions","Cómo llegar"],["You are here","Estás aquí"],
+    ["Map","Mapa"],["Satellite","Satélite"],["Training","Entrenamiento"],["Everyone","Todos"],
+    ["Routine 1: Interval cardio","Rutina 1: Cardio por intervalos"],
+    ["Routine 2: Strength and endurance circuit","Rutina 2: Circuito de fuerza y resistencia"],
+    ["Routine 3: Swimming for endurance","Rutina 3: Natación para resistencia"],
+    ["Routine 4: Functional HIIT at home","Rutina 4: HIIT funcional en casa"],
+    ["Easy jog: 5 min","Trote suave: 5 min"],["Sprint 30 s / walk 90 s × 8 rounds","Sprint 30 s / caminar 90 s × 8 rondas"],
+    ["Moderate jog: 5 min","Trote moderado: 5 min"],["Cool-down and stretching: 5 min","Enfriamiento y estiramientos: 5 min"],
+    ["Squats: 3×15","Sentadillas: 3×15"],["Push-ups: 3×12","Flexiones: 3×12"],
+    ["Alternating lunges: 3×12 per leg","Zancadas alternas: 3×12 por pierna"],["Dumbbell row: 3×12","Remo con mancuerna: 3×12"],
+    ["Plank: 3×40 s","Plancha: 3×40 s"],["Warm-up: 200 m easy freestyle","Calentamiento: 200 m estilo libre suave"],
+    ["6 × 100 m with 20 s rest","6 × 100 m con 20 s de descanso"],["4 × 50 m at hard pace","4 × 50 m a ritmo fuerte"],
+    ["Cool-down: 150 m backstroke","Enfriamiento: 150 m espalda"],["40 s exercise / 20 s rest","40 s ejercicio / 20 s descanso"],
+    ["Jump squats","Sentadilla con salto"],["Repeat the circuit 5 times","Repite el circuito 5 veces"],
+    ["Stretch for 5 min at the end","Estira 5 min al finalizar"],
+    ["Place not found","No se encontró ese lugar"],["Search error. Please try again.","Error al buscar. Intenta de nuevo."],
+    ["Your browser doesn't support geolocation","Tu navegador no permite geolocalización"],
+    ["We couldn't get your location","No se pudo obtener tu ubicación"],
+
+    /* ---- Deportes / niveles ---- */
+    ["Football","Fútbol"],["Volleyball","Voleibol"],["Swimming","Natación"],["Basketball","Baloncesto"],
+    ["Tennis","Tenis"],["Padel","Pádel"],
+    ["Beginner","Principiante"],["Intermediate","Intermedio"],["Advanced","Avanzado"],["All levels","Todos los niveles"],
+
+    /* ---- Comunidad (sección fc) ---- */
+    ["Find your","Encuentra tu"],["next","próximo"],["team.","equipo."],
+    ["Find players","Encontrar jugadores"],["Discover athletes around you.","Descubre atletas cerca de ti."],
+    ["Join matches","Unirse a partidos"],["Find games and join the action.","Encuentra partidos y súmate a la acción."],
+    ["Build your team","Crea tu equipo"],["Create your own sports community.","Crea tu propia comunidad deportiva."],
+    ["Find","Encontrar"],["players","jugadores"],["H3:Join","H3:Unirse a"],["matches","partidos"],
+    ["Build your","Crea tu"],["team","equipo"],["Join the","Únete a la"],
+    ["Browsing as guest","Navegando como invitado"],["Log in to use your account","Inicia sesión para usar tu cuenta"],
+    ["Log in","Iniciar sesión"],["Searching as","Buscando como"],["Joining as","Uniéndote como"],["Creating as","Creando como"],
+    ["Switch account","Cambiar de cuenta"],
+    ["Your name","Tu nombre"],["Favorite sport","Deporte favorito"],["Zone","Zona"],["Continue","Continuar"],
+    ["e.g. Ana Pérez","ej. Ana Pérez"],
+    ["Tip: connect your website login (see getCurrentUser) to use the real account.","Consejo: conecta el login de tu sitio (ver getCurrentUser) para usar la cuenta real."],
+    ["Search by name or zone…","Buscar por nombre o zona…"],["Matches your sport","Coincide con tu deporte"],
+    ["Connect","Conectar"],["Cancel","Cancelar"],["Request sent","Solicitud enviada"],
+    ["No players match your search.","Ningún jugador coincide con tu búsqueda."],
+    ["5v5 Night Game","Partido nocturno 5v5"],["Beach-style Volley Mix","Voley mixto estilo playa"],
+    ["Open Lane Training","Entrenamiento en carril libre"],["3x3 Pickup","Partido 3x3"],["Doubles Social","Dobles social"],
+    ["Panamá Oeste Padel Club","Club de Pádel Panamá Oeste"],
+    ["Today","Hoy"],["Tomorrow","Mañana"],["You joined","Te uniste"],["You're going","Vas a asistir"],["Full","Lleno"],
+    ["Join","Unirse"],["Leave match","Salir del partido"],["No matches for this sport yet.","Aún no hay partidos de este deporte."],
+    ["Team name","Nombre del equipo"],["e.g. Chorrera Strikers","ej. Chorrera Strikers"],["Sport","Deporte"],
+    ["Max members","Máx. de miembros"],["Privacy","Privacidad"],
+    ["Public (anyone can join)","Público (cualquiera puede unirse)"],["Private (invite only)","Privado (solo por invitación)"],
+    ["Description","Descripción"],["What is your team about?","¿De qué trata tu equipo?"],["Create team","Crear equipo"],
+    ["Your teams","Tus equipos"],["You haven't created a team yet.","Aún no has creado un equipo."],
+    ["Open teams to join","Equipos abiertos para unirte"],["Captain","Capitán"],["Public","Público"],["Private","Privado"],
+    ["Invite code:","Código de invitación:"],["Delete","Eliminar"],["Join team","Unirse al equipo"],["Leave","Salir"],
+    ["You are a member","Eres miembro"],
+    ["Friendly weekend league team.","Equipo de liga amistosa de fines de semana."],
+    ["Mixed team, all levels.","Equipo mixto, todos los niveles."],["Early-morning swim group.","Grupo de natación de madrugada."],
+    ["Request cancelled","Solicitud cancelada"],["You left the match","Saliste del partido"],
+    ["You left the team","Saliste del equipo"],["Team deleted","Equipo eliminado"],
+    ["Please type your name","Escribe tu nombre"],["Give your team a name","Ponle un nombre a tu equipo"]
+  ];
+
+  /* ======================= Reglas con números / nombres ======================= */
+  function s1(n,a,b){ return +n===1 ? a : b; }
+  var R_ES = [  /* inglés -> español */
+    [/^(\d+) requests? sent$/, function(m){return m[1]+" "+s1(m[1],"solicitud enviada","solicitudes enviadas");}],
+    [/^(\d+) match(?:es)? joined$/, function(m){return m[1]+" "+s1(m[1],"partido unido","partidos unidos");}],
+    [/^(\d+) teams?$/, function(m){return m[1]+" "+s1(m[1],"equipo","equipos");}],
+    [/^(\d+) sent$/, function(m){return m[1]+" "+s1(m[1],"enviada","enviadas");}],
+    [/^(\d+) joined$/, function(m){return m[1]+" "+s1(m[1],"unido","unidos");}],
+    [/^(\d+) spots? left$/, function(m){return m[1]+" "+s1(m[1],"cupo disponible","cupos disponibles");}],
+    [/^(\d+)\/(\d+) members$/, function(m){return m[1]+"/"+m[2]+" miembros";}],
+    [/^Waiting for (.+) to accept$/, function(m){return "Esperando que "+m[1]+" acepte";}],
+    [/^By (.+)$/, function(m){return "Por "+m[1];}],
+    [/^Welcome, (.+)!$/, function(m){return "¡Bienvenido, "+m[1]+"!";}],
+    [/^Request sent! (.+), you'll be notified when they accept\.$/, function(m){return "¡Solicitud enviada! "+m[1]+", te avisaremos cuando acepten.";}],
+    [/^Done! (.+), you joined the match\.$/, function(m){return "¡Listo! "+m[1]+", te uniste al partido.";}],
+    [/^Welcome to the team, (.+)!$/, function(m){return "¡Bienvenido al equipo, "+m[1]+"!";}],
+    [/^Team created! You are the captain, (.+)\.$/, function(m){return "¡Equipo creado! Eres el capitán, "+m[1]+".";}]
+  ];
+  var R_EN = [  /* español -> inglés */
+    [/^Por (.+)$/, function(m){return "By "+m[1];}],
+    [/^\$(\d+)\/hora$/, function(m){return "$"+m[1]+"/hour";}],
+    [/^Sesión iniciada como (.+)\. Ahora puedes continuar con la reserva\.$/, function(m){return "Signed in as "+m[1]+". You can now continue with your booking.";}],
+    [/^El inicio de sesión con (.+) requiere configurar OAuth\.$/, function(m){return "Signing in with "+m[1]+" requires OAuth setup.";}]
+  ];
+
+  /* ======================= Motor de traducción ======================= */
+  var EN2ES = {}, ES2EN = {};
+  function nk(s){ return s.replace(/\s+/g," ").trim().toLowerCase(); }
+  function sp(k){ var m = /^([A-Z0-9]+):(.+)$/.exec(k); return m ? {c:m[1]+":", t:m[2]} : {c:"", t:k}; }
+  P.forEach(function(p){ var a = sp(p[0]), b = sp(p[1]); EN2ES[a.c+nk(a.t)] = b.t; ES2EN[b.c+nk(b.t)] = a.t; });
+
+  var PREFIX = /^([^\p{L}\p{N}¿¡"“$+\/]+)([\s\S]+)$/u, SEP = / · | — /;
+  function mc(src,out){
+    if (src.length>1 && src===src.toUpperCase() && src!==src.toLowerCase()) return out.toUpperCase();
+    var c = src.charAt(0);
+    if (c!==c.toUpperCase() && /\p{L}/u.test(c)) return out.charAt(0).toLowerCase()+out.slice(1);
+    return out;
+  }
+  function core(s,ctx,to){
+    var d = to==="es" ? EN2ES : ES2EN, k = nk(s), v = d[ctx+":"+k];
+    if (v==null) v = d[k];
+    if (v!=null) return mc(s,v);
+    var m = PREFIX.exec(s);
+    if (m){ var r = core(m[2],ctx,to); if (r!==m[2]) return m[1]+r; }
+    var rules = to==="es" ? R_ES : R_EN;
+    for (var i=0;i<rules.length;i++){ m = rules[i][0].exec(s); if (m) return rules[i][1](m); }
+    if (SEP.test(s)){
+      var parts = s.split(/( · | — )/), ch = false;
+      for (var j=0;j<parts.length;j+=2){ var r2 = core(parts[j],ctx,to); if (r2!==parts[j]){ parts[j]=r2; ch=true; } }
+      if (ch) return parts.join("");
+    }
+    return s;
+  }
+  function tr(str,ctx,to){
+    var c = str.replace(/\s+/g," ").trim(); if (!c) return str;
+    var out = core(c,ctx||"",to);
+    if (out===c) return str;
+    return str.match(/^\s*/)[0] + out + str.match(/\s*$/)[0];
+  }
+
+  /* ======================= Recorrer el DOM ======================= */
+  var st = new WeakMap(), ao = new WeakMap(), btn = null, mo = null;
+  function skipEl(el){
+    return !el || el.nodeType!==1 || /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|CODE)$/.test(el.tagName) ||
+           (el.closest && el.closest("[translate=no],.notranslate"));
+  }
+  function txt(n){
+    var p = n.parentNode; if (skipEl(p)) return;
+    var v = n.nodeValue; if (!v || !/\S/.test(v)) return;
+    var rec = st.get(n), base = (rec && v===rec.t) ? rec.o : v;
+    if (p.tagName==="OPTION" && !p.hasAttribute("value")) p.setAttribute("value", base.trim());  /* conserva el valor original */
+    var out = tr(base,p.tagName,lang);
+    if (out!==v) n.nodeValue = out;
+    if (out!==base) st.set(n,{o:base,t:out}); else if (rec) st.delete(n);
+  }
+  function attrs(el){
+    ["placeholder","aria-label","title"].forEach(function(a){
+      if (!el.hasAttribute(a)) return;
+      var rec = ao.get(el) || {}, cur = el.getAttribute(a), r = rec[a], base = (r && cur===r.t) ? r.o : cur;
+      var out = tr(base,"",lang);
+      if (out!==cur) el.setAttribute(a,out);
+      if (out!==base){ rec[a] = {o:base,t:out}; ao.set(el,rec); } else if (r){ delete rec[a]; }
+    });
+  }
+  function walk(root){
+    if (root.nodeType===3){ txt(root); return; }
+    if (root.nodeType!==1 || skipEl(root)) return;
+    var w = document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null), n, list = [];
+    while ((n = w.nextNode())) list.push(n);
+    list.forEach(txt);
+    attrs(root);
+    root.querySelectorAll("[placeholder],[aria-label],[title]").forEach(function(e){ if(!skipEl(e)) attrs(e); });
+  }
+  function watch(){ mo.observe(document.body,{childList:true,subtree:true,characterData:true}); }
+
+  function paint(){
+    if (!btn) return;
+    btn.querySelectorAll("span").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-l")===lang); });
+  }
+  function setLang(l){
+    lang = l; try{ localStorage.setItem(KEY,l); }catch(e){}
+    document.documentElement.lang = l;
+    mo.disconnect(); walk(document.body); watch(); paint();
+  }
+
+  function init(){
+    var saved = null; try{ saved = localStorage.getItem(KEY); }catch(e){}
+    lang = (saved==="es"||saved==="en") ? saved : DEFAULT;
+
+    btn = document.getElementById("langBtn");
+    if (!btn){
+      btn = document.createElement("button");
+      btn.id = "langBtn"; btn.type = "button"; btn.className = "pl-lang";
+      btn.setAttribute("translate","no"); btn.setAttribute("aria-label","Language");
+      btn.innerHTML = '<span data-l="en">EN</span><span data-l="es">ES</span>';
+      var hd = document.querySelector(".hd"), bg = document.getElementById("bg");
+      if (hd) hd.insertBefore(btn, (bg && bg.parentNode===hd) ? bg : null);
+      else { btn.className += " pl-fixed"; document.body.appendChild(btn); }
+    }
+    btn.addEventListener("click",function(){ setLang(lang==="en" ? "es" : "en"); });
+
+    mo = new MutationObserver(function(muts){
+      mo.disconnect();
+      muts.forEach(function(m){
+        if (m.type==="childList") m.addedNodes.forEach(walk);
+        else if (m.type==="characterData") txt(m.target);
+      });
+      watch();
+    });
+    setLang(lang);
+  }
+
+  /* alert() también se traduce */
+  var _alert = window.alert;
+  window.alert = function(m){ return _alert.call(window, typeof m==="string" ? tr(m,"",lang) : m); };
+
+  /* API por si la necesitas: PrimeLang.set("es") · PrimeLang.get() · PrimeLang.t("texto") */
+  window.PrimeLang = { set:function(l){ if(mo) setLang(l); }, get:function(){ return lang; }, t:function(s){ return tr(s,"",lang); } };
+
+  if (document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
